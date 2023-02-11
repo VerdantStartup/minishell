@@ -1,98 +1,99 @@
 # **************************************************************************** #
 #                                                                              #
-#                                                         ::::::::             #
-#    Makefile                                           :+:    :+:             #
-#                                                      +:+                     #
-#    By: tklouwer <tklouwer@student.codam.nl>         +#+                      #
-#                                                    +#+                       #
-#    Created: 2020/11/13 10:02:57 by tklouwer      #+#    #+#                  #
-#    Updated: 2022/11/30 14:42:49 by tklouwer      ########   odam.nl          #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: verdant <verdant@student.42.fr>            +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2022/12/21 14:13:12 by verdant           #+#    #+#              #
+#    Updated: 2022/12/25 11:30:52 by verdant          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = libft.a
+NAME			= libft.a
+INCLUDE	= include/
+SRC_DIR		= src/
+OBJ_DIR		= obj/
+CC				= gcc
+CFLAGS		= -Wall -Wextra -Werror -I
+RM				= rm -rf
+AR				= ar rcs
 
-SRCS = 			ft_memset.c $\
-				ft_bzero.c $\
-				ft_memcpy.c $\
-				ft_memccpy.c $\
-				ft_memmove.c $\
-				ft_memchr.c $\
-				ft_memcmp.c $\
-				ft_memalloc.c $\
-				ft_strlen.c $\
-				ft_strlcpy.c $\
-				ft_strlcat.c $\
-				ft_strchr.c $\
-				ft_strrchr.c $\
-				ft_strnstr.c $\
-				ft_strncmp.c $\
-				ft_atoi.c $\
-				ft_isalpha.c $\
-				ft_isdigit.c $\
-				ft_intlen.c $\
-				ft_isalnum.c $\
-				ft_isascii.c $\
-				ft_isprint.c $\
-				ft_toupper.c $\
-				ft_tolower.c $\
-				ft_calloc.c $\
-				ft_strdup.c $\
-				ft_substr.c $\
-				ft_strjoin.c $\
-				ft_strtrim.c $\
-				ft_split.c $\
-				ft_itoa.c $\
-				ft_strmapi.c $\
-				ft_putchar_fd.c $\
-				ft_putstr_fd.c $\
-				ft_putendl_fd.c $\
-				ft_putnbr_fd.c $\
-				ft_isset.c $\
-				ft_itoa_base.c $\
-				ft_atol.c $\
-				get_next_line.c $\
-				get_next_line_utils.c
+###
 
-BONUS_SRCS =	ft_lstnew.c $\
-				ft_lstadd_front.c $\
-				ft_lstsize.c $\
-				ft_lstlast.c $\
-				ft_lstadd_back.c $\
-				ft_lstdelone.c $\
-				ft_lstclear.c $\
-				ft_lstiter.c $\
+FT_IS_DIR			=	ft_is/
+FT_IS					=	ft_isalnum ft_isalpha ft_isascii ft_isdigit ft_isprint
 
-OBJ = $(SRCS:.c=.o)
-BONUS_OBJ = $(BONUS_SRCS:.c=.o)
-CC = gcc
-CFLAGS = -Wall -Werror -Wextra -g
-OPTIONS = ar -rcs
-HEADER = libft.h get_next_line.h
+FT_MEM_DIR		=	ft_mem/
+FT_MEM				= ft_bzero ft_calloc ft_memchr ft_memcmp ft_memmove ft_memset
 
-ifdef WITH_BONUS
-OBJ_FILES = $(OBJ) $(BONUS_OBJ)
-else
-OBJ_FILES = $(OBJ)
-endif
+FT_PUT_DIR		=	ft_put/
+FT_PUT				=	ft_putchar_fd ft_putendl_fd ft_putnbr_fd ft_putstr_fd
 
-all: $(NAME)
+FT_TO_DIR			=	ft_to/
+FT_TO					=	ft_atoi ft_itoa ft_tolower ft_toupper
 
-$(NAME): $(OBJ_FILES)
-	@$(OPTIONS) $(NAME) $(OBJ_FILES)
+FT_STR_DIR		=	ft_str/
+FT_STR				=	ft_split ft_strchr ft_strclen ft_strdup ft_striteri ft_strjoin  \
+								ft_strlcat ft_strlcpy ft_strlen ft_strmapi ft_strncmp\
+								ft_strnstr ft_strrchr ft_strtrim ft_substr
 
-%.o: %.c $(HEADER)
-	@$(CC) -c $(CFLAGS) -o $@ $<
+FT_LST_DIR		=	ft_lst/
+FT_LST				=	ft_lstadd_back ft_lstadd_front ft_lstclear ft_lstdelone \
+								ft_lstiter ft_lstlast ft_lstmap ft_lstnew ft_lstsize
 
-bonus:
-	@$(MAKE) WITH_BONUS=1 all
+FT_PRINTF_DIR	=	ft_printf/
+FT_PRINTF			= ft_printf ft_printf_utils ft_base_itoa
+
+GNL_DIR				= get_next_line/
+GNL						= get_next_line get_next_line_utils
+
+SRC_FILES+=$(addprefix $(FT_IS_DIR),$(FT_IS))
+SRC_FILES+=$(addprefix $(FT_MEM_DIR),$(FT_MEM))
+SRC_FILES+=$(addprefix $(FT_PUT_DIR),$(FT_PUT))
+SRC_FILES+=$(addprefix $(FT_TO_DIR),$(FT_TO))
+SRC_FILES+=$(addprefix $(FT_STR_DIR),$(FT_STR))
+SRC_FILES+=$(addprefix $(FT_LST_DIR),$(FTLST))
+SRC_FILES+=$(addprefix $(FT_PRINTF_DIR),$(FT_PRINTF))
+SRC_FILES+=$(addprefix $(GNL_DIR),$(GNL))
+
+
+SRC					=	$(addprefix $(SRC_DIR), $(addsuffix .c, $(SRC_FILES)))
+OBJ					=	$(addprefix $(OBJ_DIR), $(addsuffix .o, $(SRC_FILES)))
+
+###
+
+OBJF		= test
+
+start:
+	@make all
+
+all:		$(NAME)
+
+$(NAME):	$(OBJ)
+			@$(AR) $(NAME) $(OBJ)
+
+$(OBJ_DIR)%.o : $(SRC_DIR)%.c | $(OBJF)
+			@$(CC) $(CFLAGS) $(INCLUDE) -c $< -o $@
+
+$(OBJF):
+			@mkdir -p $(OBJ_DIR)
+			@mkdir -p $(OBJ_DIR)$(FT_IS_DIR)
+			@mkdir -p $(OBJ_DIR)$(FT_MEM_DIR)
+			@mkdir -p $(OBJ_DIR)$(FT_PUT_DIR)
+			@mkdir -p $(OBJ_DIR)$(FT_TO_DIR)
+			@mkdir -p $(OBJ_DIR)$(FT_STR_DIR)
+			@mkdir -p $(OBJ_DIR)$(FT_LST_DIR)
+			@mkdir -p $(OBJ_DIR)$(FT_PRINTF_DIR)
+			@mkdir -p $(OBJ_DIR)$(GNL_DIR)
 
 clean:
-	@rm -f $(OBJ) $(BONUS_OBJ)
+			@$(RM) -r $(OBJ_DIR)
+			@$(RM) $(OBJF)
 
-fclean: clean
-	@rm -f $(NAME)
+fclean:		clean
+			@$(RM) $(NAME)
 
-re: fclean all
+re:			fclean all
 
-.PHONY: all clean fclean re
+.PHONY:		all clean fclean re

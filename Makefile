@@ -1,55 +1,53 @@
-#= Vars =#
+# Marcos #
 
-NAME := minishell
+NAME 			= testing
+LIBFT			= libft
+SRC_DIR		= src/
+OBJ_DIR		= obj/
+CC				= gcc
+CFLAGS		=  -g -lreadline -I include
+RM				= rm -f
 
-SRCS := minishell.c
+SRC_FILES	=	minishell_utils\
 
-SRCSDIR := srcs
+SRC			=	$(addprefix $(SRC_DIR), $(addsuffix .c, $(SRC_FILES)))
+OBJ			=	$(addprefix $(OBJ_DIR), $(addsuffix .o, $(SRC_FILES)))
 
-OBJDIR := obj
+OBJF			= test
 
-OBJ := $(addprefix $(OBJDIR)/,$(SRCS:.c=.o))
+# Colors #
 
-CFLAGS := -Wall -Wextra -MMD -g #add -Werror when done
+C_RESET = "\033[0m"
+C_GREEN = "\033[92m"
 
-export RL_LIB   := -L/Users/mwilsch/.brew/opt/readline/lib
-export RL_INC   := -I/Users/mwilsch/.brew/opt/readline/include
+ifdef DEBUG
+	CFLAGS += -g -fsanitize=address
+endif
 
-LIBFT := libft/libft.a
 
-INCLUDES := -I $(LIBFT) -I includes -I/opt/homebrew/Cellar/readline/8.2.1/include
-#= COLORS =#
+start:
+			@make -C $(LIBFT)
+			@echo $(C_GREEN)"Libft complied"$(C_RESET)
+			@cp $(LIBFT)/libft.a .
+			@make all
 
-GREEN = \033[0;32m
-RED = \033[0;31m
-RESET = \033[0m
+all: $(NAME)
+$(NAME): $(OBJ)
+	@$(CC) $(CFLAGS) $(INCLUDE) $(OBJ) libft.a -o $(NAME)
+	@echo $(C_GREEN)"Test compilied"$(C_RESET)
 
-#= Targets =#
+$(OBJ_DIR)%.o: $(SRC_DIR)%.c | $(OBJF)
+	@$(CC) $(CFLAGS) -c $< $(INCLUDE) -o $@
 
-all: libft $(NAME)
-
-$(NAME): $(OBJDIR) $(OBJ) $(LIBFT)
-	@echo "$(GREEN)Building Minishell ...$(RESET)"
-	@$(CC) $(OBJ) -lreadline -lhistory $(LIBFT) $(RL_LIB) $(INCLUDES) -o $(NAME)
-
-$(OBJDIR)/%.o: $(addprefix $(SRCSDIR)/, %.c)
-	@$(CC)  -c $(RL_INC) $(CFLAGS) $< -o $@ 
-
-$(OBJDIR):
-	@echo "$(GREEN)Building object files ...$(RESET)"
-	@mkdir -p $(OBJDIR)
-
-$(LIBFT):
-	@echo "$(GREEN)Building libft ...$(RESET)"
-	@$(MAKE) -C libft WITH_BONUS=1
-
-clean:
-	@echo "$(RED)Cleaning ...$(RESET)"
-	@$(MAKE) -C libft clean
-	@rm -rf $(OBJDIR)
+$(OBJF):
+	@mkdir -p $(OBJ_DIR)
 
 fclean: clean
-	@rm -rf $(NAME) $(OBJDIR)
-	@$(MAKE) -C libft fclean
+	@$(RM) $(NAME)
+	@$(RM) -r $(OBJ_DIR)
+	@echo "$(Red)All libs cleaned$(Reset)"
 
 re: fclean all
+	@echo "$(Yellow)Recomplied everything$(Reset)"
+
+.PHONY: all clean fclean re
