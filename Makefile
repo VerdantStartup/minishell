@@ -45,6 +45,7 @@ $(OBJF):
 fclean: clean
 	@$(RM) $(NAME)
 	@$(RM) -r $(OBJ_DIR)
+	@$(RM) -r libft.a
 	@echo "$(Red)All libs cleaned$(Reset)"
 
 re: fclean all
