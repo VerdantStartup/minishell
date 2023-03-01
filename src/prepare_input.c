@@ -6,7 +6,7 @@
 /*   By: verdant <verdant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 11:52:23 by verdant           #+#    #+#             */
-/*   Updated: 2023/03/01 12:51:21 by verdant          ###   ########.fr       */
+/*   Updated: 2023/03/01 12:54:05 by verdant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ bool	cmd_res(char *str, t_cmd *cmd, t_data *data)
 
 int main(void)
 {
-	// char *line = "echo -n > output.txt";
+	char *line = "echo -n > output.txt";
 	// char *line = "echo -n “$HOME and more text”> output.txt";
 	ft_split_ultimate(line, " ", "><", "\'\"");
 }

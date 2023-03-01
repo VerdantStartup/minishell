@@ -6,7 +6,7 @@
 /*   By: verdant <verdant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 16:06:26 by verdant           #+#    #+#             */
-/*   Updated: 2023/03/01 12:52:17 by verdant          ###   ########.fr       */
+/*   Updated: 2023/03/01 15:16:22 by verdant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,46 +27,16 @@ int	count_wrds(char *line, char *delim_skip, char *delim_keep, char *keep)
 	while (line[i])
 	{
 		// Reached a non-delimiter character = Reached a word
-		if (!is_delim(line[i], delim_skip) && !is_delim(line[i], delim_keep))
+		if (!is_delim(line[i], delim_set))
 		{
 			cnt++;
-			while (!is_delim(line[i], delim_skip) && !is_delim(line[i], delim_keep) && line[i + 1] != '\0')
+			while (!is_delim(line[i], delim_set) && line[i + 1] != '\0')
 				i++;
 		}
 		i++; // Skip over delimiters
 	}
 	return (cnt);
 }
-// int	count_wrds(char *line, char *delim_skip, char *delim_keep, char *keep)
-// {
-// 	int	i;
-// 	int	cnt;
-
-// 	i = 0;
-// 	cnt = 0;
-// 	if (line == NULL)
-// 		return (-1);
-// 	while (line[i])
-// 	{
-// 		// Reached a "keep-char" everything inbetween should be skipped over
-// 		if (is_skip(line[i], keep))
-// 		{
-// 			i++;
-// 			while (!is_skip(line[i], keep))
-// 				i++;
-// 			// i++;
-// 		}
-// 		// Reached a non-delimiter character = Reached a word
-// 		if (!is_delim(line[i], delim_skip) || !is_delim(line[i], delim_keep))
-// 		{
-// 			cnt++;
-// 			while (!is_delim(line[i], delim_skip) || !is_delim(line[i], delim_keep))
-// 				i++;
-// 		}
-// 		i++; // Skip over delimiters
-// 	}
-// 	return (cnt);
-// }
 
 char **ft_split_ultimate(char *line, char *delim_skip, char *delim_keep, char *keep)
 {
