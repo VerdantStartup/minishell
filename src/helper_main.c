@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   helper_main.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: verdant <verdant@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mwilsch <mwilsch@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 14:57:38 by verdant           #+#    #+#             */
-/*   Updated: 2023/02/28 16:45:51 by verdant          ###   ########.fr       */
+/*   Updated: 2023/03/01 17:14:53 by mwilsch          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,13 @@ bool	prep_cmd(char *str, t_cmd *cmd, t_data *data)
 	int k;
 
 	len = 0;
-	i = 1;
+	i = 1; // because name[0] = /
 	k = 0;
-	while (str[len] && !is_delim(str[len], data->delimiter))
+	while (str[k] && str[k] == ' ') // Skipping over spaces
+		k++;
+	while (str[len + k] && !is_delim(str[len + k], data->delimiter))
 		len++;
+	data->spc_cmd_len = len + k;
 	cmd->name = malloc(sizeof(char) * (len + 2));
 	if (!cmd->name)
 		return (false);
@@ -33,11 +36,11 @@ bool	prep_cmd(char *str, t_cmd *cmd, t_data *data)
 	cmd->name[0] = '/';
 	while (i < len + 1)
 		cmd->name[i++] = str[k++];
-	i = 0;
-	// Removing the cmd from the string
-	ft_memmove(str, str + len, ft_strlen(str));
 	return (true);
 }
+
+// Helper for cmd_resolution
+
 
 // Helper for cmd_resolution
 
@@ -66,22 +69,11 @@ char	*add_to_arr(char *string,char *string_to_add, int size)
 t_cmd *structs_init(char *input, t_cmd *cmds, t_data *data)
 {	
 	data->delimiter = " <>";
-	data->cmd_cnt = count_occurences(input, '|');
+	data->cmd_cnt = 1;
+	data->cmd_cnt += count_occurences(input, '|');
 	cmds = malloc(sizeof(t_cmd) * (data->cmd_cnt));
 	if (!cmds)
 		return (NULL);
 	return (cmds);
 }
 
-// Preparing string for splitting
-
-// bool	prep_str(char *str)
-// {
-// 	int i;
-	
-// 	i = 0;
-// 	while (str[i])
-// 	{
-// 		if (is_delimiter(str[i]))
-// 	}
-// }

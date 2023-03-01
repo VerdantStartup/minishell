@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: verdant <verdant@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mwilsch <mwilsch@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 12:02:25 by verdant           #+#    #+#             */
-/*   Updated: 2023/02/28 16:43:48 by verdant          ###   ########.fr       */
+/*   Updated: 2023/03/01 16:49:12 by mwilsch          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ int count_occurences(char *input, char c)
 	int	cnt;
 
 	i = 0;
-	cnt = 1;
+	cnt = 0;
 	while(input[i])
 	{
 		if (input[i] == c)
@@ -94,4 +94,9 @@ bool	is_skip(char c, char *skip)
 		i++;
 	}
 	return (false);
+}
+
+void	err_msg(char *msg)
+{
+	printf("%s", msg);
 }

@@ -6,7 +6,7 @@
 /*   By: mwilsch <mwilsch@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 20:22:26 by mwilsch           #+#    #+#             */
-/*   Updated: 2023/03/01 12:34:46 by mwilsch          ###   ########.fr       */
+/*   Updated: 2023/03/01 16:49:21 by mwilsch          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ typedef struct s_command {
 
 typedef struct s_data {
 	int cmd_cnt;
+	int	spc_cmd_len;
 	char *delimiter;
 } t_data;
 
@@ -54,6 +55,7 @@ bool	is_delim(char c, char *delimiters);
 bool	is_skip(char c, char *skip);
 int		count_occurences(char *input, char c);
 void	free_split(char **arr);
+void	err_msg(char *msg);
 
 /**
  * @brief Utily functions which are used in my main file

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   testing_stuff.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: verdant <verdant@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mwilsch <mwilsch@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/07 13:57:10 by mwilsch           #+#    #+#             */
-/*   Updated: 2023/02/28 10:38:05 by verdant          ###   ########.fr       */
+/*   Updated: 2023/03/01 17:16:55 by mwilsch          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,25 @@ int main() {
 
 
 
+// Prototype & libary
+#include <stdlib.h>
 
+char *getenv(const char *name);
+
+// Example
+#include <stdio.h>
+#include <stdlib.h>
+
+int main() {
+    char *value = getenv("HOME");
+    if (value == NULL) {
+        perror("getenv");
+        return 1;
+    }
+
+    printf("HOME=%s", value);
+    return 0;
+}
 
 
 

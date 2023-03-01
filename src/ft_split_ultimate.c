@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split_ultimate.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: verdant <verdant@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mwilsch <mwilsch@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 16:06:26 by verdant           #+#    #+#             */
-/*   Updated: 2023/03/01 15:16:22 by verdant          ###   ########.fr       */
+/*   Updated: 2023/03/01 15:52:12 by mwilsch          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,12 @@ int	count_wrds(char *line, char *delim_skip, char *delim_keep, char *keep)
 	char *delim_set = ft_strjoin(delim_skip, delim_keep);
 	while (line[i])
 	{
+		if (is_skip(line[i], keep))
+		{
+			i++;
+			while (!is_skip(line[i], keep))
+				i++;
+		}
 		// Reached a non-delimiter character = Reached a word
 		if (!is_delim(line[i], delim_set))
 		{
