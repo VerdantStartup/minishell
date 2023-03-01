@@ -5,10 +5,10 @@ LIBFT			= libft
 SRC_DIR		= src/
 OBJ_DIR		= obj/
 CC				= gcc
-CFLAGS		=  -g -lreadline -I include
-RM				= rm -f
+CFLAGS		= -lreadline -I include
+RM				= rm -rf
 
-SRC_FILES	=	minishell_utils\
+SRC_FILES	=	prepare_input utils helper_main ft_split_ultimate\
 
 SRC			=	$(addprefix $(SRC_DIR), $(addsuffix .c, $(SRC_FILES)))
 OBJ			=	$(addprefix $(OBJ_DIR), $(addsuffix .o, $(SRC_FILES)))
@@ -33,19 +33,25 @@ start:
 
 all: $(NAME)
 $(NAME): $(OBJ)
-	@$(CC) $(CFLAGS) $(INCLUDE) $(OBJ) libft.a -o $(NAME)
+	@$(CC) $(CFLAGS) $(OBJ) libft.a -o $(NAME)
 	@echo $(C_GREEN)"Test compilied"$(C_RESET)
 
 $(OBJ_DIR)%.o: $(SRC_DIR)%.c | $(OBJF)
-	@$(CC) $(CFLAGS) -c $< $(INCLUDE) -o $@
+	@$(CC) $(CFLAGS) -c $< -o $@
 
 $(OBJF):
 	@mkdir -p $(OBJ_DIR)
 
+clean:
+	@$(RM) $(OBJ_DIR)
+	@$(RM) $(OBJF)
+	@make clean -C $(LIBFT)
+
 fclean: clean
-	@$(RM) $(NAME)
-	@$(RM) -r $(OBJ_DIR)
-	@$(RM) -r libft.a
+	@$(RM) $(NAME) $(NAMESV)
+	@$(RM) $(LIBFT)/libft.a
+	@$(RM) libft.a
+	@find . -name ".DS_Store" -delete
 	@echo "$(Red)All libs cleaned$(Reset)"
 
 re: fclean all
