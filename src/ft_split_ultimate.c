@@ -3,17 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split_ultimate.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: verdant <verdant@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mwilsch <mwilsch@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 16:06:26 by verdant           #+#    #+#             */
-/*   Updated: 2023/02/28 16:47:52 by verdant          ###   ########.fr       */
+/*   Updated: 2023/03/01 12:37:21 by mwilsch          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "testing.h"
 
+// echo -n “$HOME and more text”> output.txt
 
-int	count_wrds(char *line, char *delim_set, char *skip)
+int	count_wrds(char *line, char *delim_skip, char *delim_keep, char *keep)
 {
 	int	i;
 	int	cnt;
@@ -22,21 +23,20 @@ int	count_wrds(char *line, char *delim_set, char *skip)
 	cnt = 0;
 	if (line == NULL)
 		return (-1);
-	// while (line[i] && is_delim(line[i], delim_set))
-	// 	i++;
 	while (line[i])
 	{
-		if (!is_delim(line[i], delim_set))
+		// Reached a non-delimiter character = Reached a word
+		if (!is_delim(line[i], delim_skip) || !is_delim(line[i], delim_keep))
 		{
 			cnt++;
-			while (!is_delim(line[i], delim_set))
+			while (!is_delim(line[i], delim_skip) || !is_delim(line[i], delim_keep))
 				i++;
 		}
-		i++;
+		i++; // Skip over delimiters
 	}
 	return (cnt);
 }
-// int	count_wrds(char *line, char *delim_set, char *skip)
+// int	count_wrds(char *line, char *delim_skip, char *delim_keep, char *keep)
 // {
 // 	int	i;
 // 	int	cnt;
@@ -47,48 +47,31 @@ int	count_wrds(char *line, char *delim_set, char *skip)
 // 		return (-1);
 // 	while (line[i])
 // 	{
-// 		// If it charcs a between a skip character delim don't count
-// 		if (is_skip(line[i], skip))
+// 		// Reached a "keep-char" everything inbetween should be skipped over
+// 		if (is_skip(line[i], keep))
 // 		{
 // 			i++;
-// 			while (!is_skip(line[i], skip) && line[i + 1] != '\0')
+// 			while (!is_skip(line[i], keep))
 // 				i++;
+// 			// i++;
 // 		}
-// 		// If a word has been reached
-// 		if (!is_delimiter(line[i], delim_set) && !is_skip(line[i], skip) && line[i + 1] != '\0')
+// 		// Reached a non-delimiter character = Reached a word
+// 		if (!is_delim(line[i], delim_skip) || !is_delim(line[i], delim_keep))
 // 		{
 // 			cnt++;
-// 			while (!is_delimiter(line[i], delim_set) && line[i + 1] != '\0')
+// 			while (!is_delim(line[i], delim_skip) || !is_delim(line[i], delim_keep))
 // 				i++;
 // 		}
+// 		i++; // Skip over delimiters
 // 	}
 // 	return (cnt);
 // }
 
-char **ft_split_ultimate(char *line, char *delim_set, char *skip)
+char **ft_split_ultimate(char *line, char *delim_skip, char *delim_keep, char *keep)
 {
-	const int	wrd_cnt = count_wrds(line, delim_set, skip);
-
-	// printf("%d\n", wrd_cnt);
-	// char **str_arr;
-	// int i;
-	// char *line_trimable;
-	
-	// // t_data sth = sth // Add a helper struct here
-
-	// line_trimable = ft_strdup(line);
-	// str_arr = malloc(sizeof(char *) * (wrd_cnt + 1));
-	// if (!str_arr || wrd_cnt == -1)
-	// 	return (free(str_arr), NULL);
-	// str_arr[wrd_cnt] = NULL;
-	// i = 0;
-	// while (i < wrd_cnt)
-	// {
-	// 	str_arr[i] = store_wrd(line_trimable, delim_set, skip);
-	// 	// if (str_arr[i] == NULL) // Do we need this?
-	// 		// free_mem(str_arr); 
-	// 	trim_string(line_trimable, delim_set, skip);
-	// 	i++;
-	// }
+	const int	wrd_cnt = count_wrds(line, delim_skip, delim_keep, keep);
+	printf("%d", wrd_cnt);
 	return (NULL);
 }
+
+

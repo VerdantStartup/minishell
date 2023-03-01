@@ -54,7 +54,7 @@ fclean: clean
 	@find . -name ".DS_Store" -delete
 	@echo "$(Red)All libs cleaned$(Reset)"
 
-re: fclean all
+re: fclean start
 	@echo "$(Yellow)Recomplied everything$(Reset)"
 
 .PHONY: all clean fclean re

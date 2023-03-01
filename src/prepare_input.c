@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prepare_input.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: verdant <verdant@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mwilsch <mwilsch@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 11:52:23 by verdant           #+#    #+#             */
-/*   Updated: 2023/02/28 16:33:19 by verdant          ###   ########.fr       */
+/*   Updated: 2023/03/01 12:37:37 by mwilsch          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,28 +49,35 @@ bool	cmd_res(char *str, t_cmd *cmd, t_data *data)
 	return (true);
 }
 
-int main(int argc, char *argv[])
-{
-	char				*input = readline(""); // Reading the cmd line input
-	char				**arr;
-	t_cmd				*cmds;
-	t_data			data;
-	int					i;
+// int main(int argc, char *argv[])
+// {
+// 	char				*input = readline(""); // Reading the cmd line input
+// 	char				**arr;
+// 	t_cmd				*cmds;
+// 	t_data			data;
+// 	int					i;
 	
-	i = 0;
-	cmds = structs_init(input, cmds, &data);
-	if (!cmds || !is_quotes_closed(input)) // Is this okay?
-		return (1);
-	arr = ft_split(input, '|');
-	// Check if splitting was succesfull // Do this later
-	while (i < data.cmd_cnt)
-	{
-		if (!cmd_res(arr[i], &cmds[i], &data))
-			return (1);
-		printf("%s\n", arr[i]);
-		i++;
-	}
-	ft_split_ultimate(arr[0], data.delimiter, "\'\"");
+// 	i = 0;
+// 	cmds = structs_init(input, cmds, &data);
+// 	if (!cmds || !is_quotes_closed(input)) // Is this okay?
+// 		return (1);
+// 	arr = ft_split(input, '|');
+// 	// Check if splitting was succesfull // Do this later
+// 	while (i < data.cmd_cnt)
+// 	{
+// 		if (!cmd_res(arr[i], &cmds[i], &data))
+// 			return (1);
+// 		printf("%s\n", arr[i]);
+// 		i++;
+// 	}
+// 	ft_split_ultimate(arr[0], data.delimiter, "\'\"");
+// }
+
+int main(void)
+{
+	char *line = "echo -n > output.txt";
+	// char *line = "echo -n “$HOME and more text”> output.txt";
+	ft_split_ultimate(line, " ", "><", "\'\"");
 }
 
 // With the remaining string I need to take care of two things

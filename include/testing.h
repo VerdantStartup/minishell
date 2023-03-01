@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   testing.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: verdant <verdant@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mwilsch <mwilsch@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 20:22:26 by mwilsch           #+#    #+#             */
-/*   Updated: 2023/02/28 16:43:55 by verdant          ###   ########.fr       */
+/*   Updated: 2023/03/01 12:34:46 by mwilsch          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,10 @@ bool	prep_cmd(char *str, t_cmd *cmd, t_data *data);
 
 
 
-char **ft_split_ultimate(char *line, char *delim_set, char *skip);
+char **ft_split_ultimate(char *line, char *delim_skip, char *delim_keep, char *keep);
+
+
+
 
 
 #endif
