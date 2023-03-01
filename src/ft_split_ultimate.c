@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split_ultimate.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mwilsch <mwilsch@student.42.fr>            +#+  +:+       +#+        */
+/*   By: verdant <verdant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 16:06:26 by verdant           #+#    #+#             */
-/*   Updated: 2023/03/01 12:37:21 by mwilsch          ###   ########.fr       */
+/*   Updated: 2023/03/01 12:52:17 by verdant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,13 +23,14 @@ int	count_wrds(char *line, char *delim_skip, char *delim_keep, char *keep)
 	cnt = 0;
 	if (line == NULL)
 		return (-1);
+	char *delim_set = ft_strjoin(delim_skip, delim_keep);
 	while (line[i])
 	{
 		// Reached a non-delimiter character = Reached a word
-		if (!is_delim(line[i], delim_skip) || !is_delim(line[i], delim_keep))
+		if (!is_delim(line[i], delim_skip) && !is_delim(line[i], delim_keep))
 		{
 			cnt++;
-			while (!is_delim(line[i], delim_skip) || !is_delim(line[i], delim_keep))
+			while (!is_delim(line[i], delim_skip) && !is_delim(line[i], delim_keep) && line[i + 1] != '\0')
 				i++;
 		}
 		i++; // Skip over delimiters
