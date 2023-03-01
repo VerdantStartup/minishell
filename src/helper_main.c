@@ -6,7 +6,7 @@
 /*   By: mwilsch <mwilsch@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 14:57:38 by verdant           #+#    #+#             */
-/*   Updated: 2023/03/01 17:14:53 by mwilsch          ###   ########.fr       */
+/*   Updated: 2023/03/01 18:54:41 by mwilsch          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,27 @@ bool	prep_cmd(char *str, t_cmd *cmd, t_data *data)
 
 // Helper for cmd_resolution
 
+bool	substitute_var(char *str, char *env_var)
+{
+	const int		size = ft_strlen(str) + ft_strlen(var_res);
+	char				*temp;
+	int					i;
+
+	i = 0;	
+	temp = malloc(sizeof(char) * (size + 1));
+	if (!temp)
+		return (false);
+	temp[size] = '\0';
+	while (str[i] && i < size)
+	{
+		temp[i] = str[i];
+		i++;
+		if (str[i] == '$')
+		{
+			while ()
+		}
+	}
+}
 
 // Helper for cmd_resolution
 

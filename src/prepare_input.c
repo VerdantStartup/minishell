@@ -6,7 +6,7 @@
 /*   By: mwilsch <mwilsch@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 11:52:23 by verdant           #+#    #+#             */
-/*   Updated: 2023/03/01 17:23:38 by mwilsch          ###   ########.fr       */
+/*   Updated: 2023/03/01 18:52:56 by mwilsch          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,11 @@ bool	env_res(char *str, t_data *data)
 {
 	char *env_var;
 	char *var_res;
+	char *temp;
 	int start;
+	int	size;
 	int	len;
 	int	i;
-
 
 	start = 0;
 	len = 0;
@@ -52,9 +53,12 @@ bool	env_res(char *str, t_data *data)
 	var_res = getenv(env_var);
 	if (!var_res)
 		return (err_msg("HERE1"), free(env_var), false);
-	printf("%s", var_res);
+	free(env_var);
+	str = substitute_var(str, env_var);
 	return (true);
 }
+
+// echo -n "$HOME and some text"
 
 bool	cmd_res(char *str, t_cmd *cmd, t_data *data)
 {
