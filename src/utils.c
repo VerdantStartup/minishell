@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mwilsch <mwilsch@student.42.fr>            +#+  +:+       +#+        */
+/*   By: Verdant <Verdant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 12:02:25 by verdant           #+#    #+#             */
-/*   Updated: 2023/03/01 16:49:12 by mwilsch          ###   ########.fr       */
+/*   Updated: 2023/03/02 19:15:14 by Verdant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,8 @@ int count_occurences(char *input, char c)
 
 	i = 0;
 	cnt = 0;
+	if (!input)
+		return (-1);
 	while(input[i])
 	{
 		if (input[i] == c)
@@ -99,4 +101,22 @@ bool	is_skip(char c, char *skip)
 void	err_msg(char *msg)
 {
 	printf("%s", msg);
+}
+
+bool str_literal(char *str)
+{
+	const int found = ft_strclen(str, '$');
+	int i;
+	
+	i = 0;
+
+
+	// Assuming the quotes are always closed bc I have a extra check for that in my main
+
+	while (str[i])
+	{
+		if (str[i] == '\'')
+		
+	
+	}
 }

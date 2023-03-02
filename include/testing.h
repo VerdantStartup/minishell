@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   testing.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mwilsch <mwilsch@student.42.fr>            +#+  +:+       +#+        */
+/*   By: Verdant <Verdant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 20:22:26 by mwilsch           #+#    #+#             */
-/*   Updated: 2023/03/01 16:49:21 by mwilsch          ###   ########.fr       */
+/*   Updated: 2023/03/02 17:20:15 by Verdant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,9 +40,11 @@ typedef struct s_command {
 } t_cmd;
 
 typedef struct s_data {
-	int cmd_cnt;
-	int	spc_cmd_len;
-	char *delimiter;
+	int		cmd_cnt;
+	int		env_len;
+	int		spc_cmd_len;
+	char	*delimiter;
+	char	*skip;
 } t_data;
 
 
@@ -64,12 +66,13 @@ void	err_msg(char *msg);
 t_cmd *structs_init(char *input, t_cmd *cmds, t_data *data);
 char	*add_to_arr(char *string,char *string_to_add, int size);
 bool	prep_cmd(char *str, t_cmd *cmd, t_data *data);
+char	*substitute_var(char *str, char *env_var, int cmd_len, t_data *data);
+char	*get_env(char *str, t_data *data);
 
 
 
 
-
-char **ft_split_ultimate(char *line, char *delim_skip, char *delim_keep, char *keep);
+// char **ft_split_ultimate(char *line, char *delim_skip, char *delim_keep, char *keep);
 
 
 

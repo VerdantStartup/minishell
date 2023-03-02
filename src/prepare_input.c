@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prepare_input.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mwilsch <mwilsch@student.42.fr>            +#+  +:+       +#+        */
+/*   By: Verdant <Verdant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 11:52:23 by verdant           #+#    #+#             */
-/*   Updated: 2023/03/01 18:52:56 by mwilsch          ###   ########.fr       */
+/*   Updated: 2023/03/02 19:20:25 by Verdant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,33 +28,24 @@
 
 bool	env_res(char *str, t_data *data)
 {
-	char *env_var;
-	char *var_res;
-	char *temp;
-	int start;
-	int	size;
-	int	len;
+	const int	cnt = count_occurences(str, '$');
 	int	i;
 
-	start = 0;
-	len = 0;
-	if (str[0] == '\0' || count_occurences(str, '$') == 0)
+	i = 0;
+	// Checking if Env Var exits
+	if (str[0] == '\0' || cnt <= 0 || str_literal(str));
 		return (err_msg("Str empty or no $"), true);
-	start = ft_strclen(str, '$') + 1;
-	i = start;
-	while (str[i] && !is_delim(str[i], data->delimiter))
+
+	// I need to build a check where a $ inside a string does not get subsituted
+	// But if there is a $ outside of that I need to somehow still subsitute that - fuck yah
+
+	while (i < cnt)
 	{
-		len++;
+		str = substitute_var(str, get_env(str, data), data->env_len + 1, data);
+		data->env_len = 0;
 		i++;
 	}
-	env_var = ft_substr(str, start, len);
-	if (!env_var)
-		return (err_msg("HERE") ,free(env_var), false);
-	var_res = getenv(env_var);
-	if (!var_res)
-		return (err_msg("HERE1"), free(env_var), false);
-	free(env_var);
-	str = substitute_var(str, env_var);
+	printf("%s\n", str);
 	return (true);
 }
 
@@ -79,9 +70,9 @@ bool	cmd_res(char *str, t_cmd *cmd, t_data *data)
 		}
 		i++;
 	}
-	free_split(path_mod);
 	if (path_mod[i] == NULL)
-		return (err_msg("Command not found"),false);
+		return (free_split(path_mod), err_msg("Command not found"),false);
+	free_split(path_mod);
 	ft_memmove(str, str + data->spc_cmd_len, ft_strlen(str));
 	return (true);
 }
@@ -89,10 +80,12 @@ bool	cmd_res(char *str, t_cmd *cmd, t_data *data)
 int main(int argc, char *argv[])
 {
 	char				*input = readline(""); // Reading the cmd line input
+	// char				*input = "echo -n \"$HOME and some text\"";
 	char				**arr;
 	t_cmd				*cmds;
 	t_data			data;
 	int					i;
+	
 	
 	i = 0;
 	cmds = structs_init(input, cmds, &data);
@@ -107,7 +100,6 @@ int main(int argc, char *argv[])
 		// printf("%d\n", arr[i][0]);
 		i++;
 	}
-	// ft_split_ultimate(input, " ", "><", "\'\"");
 }
 
 

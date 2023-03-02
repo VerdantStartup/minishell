@@ -1,6 +1,0 @@
-libft:
-Makefile
-include
-libft.a
-obj
-src
