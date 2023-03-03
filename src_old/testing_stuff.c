@@ -6,7 +6,7 @@
 /*   By: mwilsch <mwilsch@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/07 13:57:10 by mwilsch           #+#    #+#             */
-/*   Updated: 2023/03/01 17:16:55 by mwilsch          ###   ########.fr       */
+/*   Updated: 2023/03/03 14:44:37 by mwilsch          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,47 +46,44 @@
 // 	execve(path_modfiable[i], argv, NULL);
 // }
 
-int main() {
-    char *argv[] = {"ls", "-llibft", NULL};
-    char *envp[] = {NULL};
+// int main() {
+//     char *argv[] = {"ls", "-llibft", NULL};
+//     char *envp[] = {NULL};
 
-    int ret = execve("/bin/ls", argv, envp);
-    if (ret == -1) {
-        perror("execve");
-        return 1;
-    }
+//     int ret = execve("/bin/ls", argv, envp);
+//     if (ret == -1) {
+//         perror("execve");
+//         return 1;
+//     }
 
-    return 0;
-}
-
-
+//     return 0;
+// }
 
 
 
 
+// char *getenv(const char *name);
+
+// // Example
+// #include <stdio.h>
+// #include <stdlib.h>
+
+// int main() {
+//     char *value = getenv("HOME");
+//     if (value == NULL) {
+//         perror("getenv");
+//         return 1;
+//     }
+
+//     printf("HOME=%s", value);
+//     return 0;
+// }
 
 
 
-
-// Prototype & libary
-#include <stdlib.h>
-
-char *getenv(const char *name);
-
-// Example
-#include <stdio.h>
-#include <stdlib.h>
-
-int main() {
-    char *value = getenv("HOME");
-    if (value == NULL) {
-        perror("getenv");
-        return 1;
-    }
-
-    printf("HOME=%s", value);
-    return 0;
-}
-
+// int	main(void)
+// {
+// 	printf("%d", (1 % 2));
+// }
 
 

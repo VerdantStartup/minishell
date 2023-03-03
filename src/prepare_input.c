@@ -6,7 +6,7 @@
 /*   By: mwilsch <mwilsch@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 11:52:23 by verdant           #+#    #+#             */
-/*   Updated: 2023/03/03 13:22:00 by mwilsch          ###   ########.fr       */
+/*   Updated: 2023/03/03 16:53:45 by mwilsch          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,29 +26,30 @@
 // 	system("leaks -q ./testing");
 // }
 
-bool	env_res(char *str, t_data *data)
+bool	env_res(char **str, t_data *data)
 {
-	const int	cnt = count_occurences(str, '$');
+	const int	cnt = count_occurences_skip(*str, '$', '\'');
 	int	i;
 
 	i = 0;
 	// Checking if Env Var exits
-	if (str[0] == '\0' || cnt <= 0)
+	if (*str[0] == '\0' || cnt <= 0)
 		return (true); // err_msg("Str empty or no $")
 
 	// I need to build a check where a $ inside a string does not get subsituted
 	// But if there is a $ outside of that I need to somehow still subsitute that - fuck yah
 
-	while (i < cnt)
+
+	while (i < cnt) // cnt
 	{
-		if (!str_literal(str, i))
-			str = substitute_var(str, get_env(str, data), data->env_len + 1, data);
-			if (!str)
-				return (false);
+		data->env_start = ft_search_c(*str, '$', '\'') + 1;
+		*str = substitute_var(*str, get_env(*str, data), data->env_len + 1, data);
+		if (!*str)
+			return (false);
 		data->env_len = 0;
 		i++;
 	}
-	printf("%s\n", str);
+	// printf("%s", str);
 	return (true);
 }
 
@@ -92,16 +93,17 @@ int main(int argc, char *argv[])
 	
 	i = 0;
 	cmds = structs_init(input, cmds, &data);
-	if (!cmds || !is_quotes_closed(input)) // Is this okay?
+	// Fix for multiple quotes
+	if (!cmds || !is_quotes_closed(input)) 
 		return (1);
 	arr = ft_split(input, '|');
 	// Check if splitting was succesfull // Do this later
 	while (i < data.cmd_cnt)
 	{
-		if (!cmd_res(arr[i], &cmds[i], &data) || !env_res(arr[i], &data))
+		if (!cmd_res(arr[i], &cmds[i], &data) || !env_res(&arr[i], &data))
 			return (1);
 		// printf("%s\n", cmds[i].name);
-		// printf("%s\n", arr[i]);
+		printf("%s\n", arr[i]);
 		i++;
 	}
 }

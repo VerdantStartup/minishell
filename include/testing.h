@@ -6,7 +6,7 @@
 /*   By: mwilsch <mwilsch@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 20:22:26 by mwilsch           #+#    #+#             */
-/*   Updated: 2023/03/03 13:22:27 by mwilsch          ###   ########.fr       */
+/*   Updated: 2023/03/03 16:59:53 by mwilsch          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,9 @@ typedef struct s_command {
 
 typedef struct s_data {
 	int		cmd_cnt;
-	int		env_len;
 	int		spc_cmd_len;
+	int		env_len;
+	int		env_start;
 	char	*delimiter;
 	char	*skip;
 } t_data;
@@ -55,9 +56,7 @@ typedef struct s_data {
 bool	is_quotes_closed(char *input);
 bool	is_delim(char c, char *delimiters);
 bool	is_skip(char c, char *skip);
-bool	str_literal(char *str, int occur);
 int		count_occurences(char *input, char c);
-int		ft_find_occur(char *str, char c, int occur);
 void	free_split(char **arr);
 void	err_msg(char *msg);
 
@@ -71,7 +70,8 @@ bool	prep_cmd(char *str, t_cmd *cmd, t_data *data);
 char	*substitute_var(char *str, char *env_var, int env_len, t_data *data);
 char	*get_env(char *str, t_data *data);
 
-
+int	ft_search_c(char *str, char c, char skip);
+int	count_occurences_skip(char *str, char c, char skip);
 
 
 // char **ft_split_ultimate(char *line, char *delim_skip, char *delim_keep, char *keep);
