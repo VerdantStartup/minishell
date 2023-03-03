@@ -8,7 +8,7 @@ CC				= gcc
 CFLAGS		= -lreadline -I include
 RM				= rm -rf
 
-SRC_FILES	=	prepare_input utils helper_main ft_split_ultimate\
+SRC_FILES	=	prepare_input utils helper_main env_substitution\
 
 SRC			=	$(addprefix $(SRC_DIR), $(addsuffix .c, $(SRC_FILES)))
 OBJ			=	$(addprefix $(OBJ_DIR), $(addsuffix .o, $(SRC_FILES)))

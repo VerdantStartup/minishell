@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: verdant <verdant@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mwilsch <mwilsch@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/11 15:13:57 by mwilsch           #+#    #+#             */
-/*   Updated: 2023/02/28 16:03:07 by verdant          ###   ########.fr       */
+/*   Updated: 2023/03/03 21:00:34 by mwilsch          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,22 @@ bool	is_skip(char c, char *skip)
 	while (skip[i])
 	{
 		if (c == skip[i])
+			return (true);
+		i++;
+	}
+	return (false);
+}
+
+bool	incl_char(char c, char *search_str)
+{
+	int	i;
+
+	i = 0;
+	if (!search_str)
+		return (false);
+	while (search_str[i])
+	{
+		if (c == search_str[i])
 			return (true);
 		i++;
 	}

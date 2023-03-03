@@ -6,7 +6,7 @@
 /*   By: mwilsch <mwilsch@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 20:22:26 by mwilsch           #+#    #+#             */
-/*   Updated: 2023/03/03 16:59:53 by mwilsch          ###   ########.fr       */
+/*   Updated: 2023/03/03 21:30:59 by mwilsch          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,6 @@ enum tokens {
 	ENV_VAR,
 };
 
-// typedef struct s_cmd_resolution {
-// 	int	pipe_index[];
-// 	int	cmd_cnt;
-// } t_cmd_res;
-
 
 typedef struct s_command {
 	char	*name;           // The name of the command
@@ -44,39 +39,49 @@ typedef struct s_data {
 	int		spc_cmd_len;
 	int		env_len;
 	int		env_start;
-	char	*delimiter;
+	int		env_size;
+	char	*delim;
 	char	*skip;
 } t_data;
 
 
+// void	err_msg(char *msg);
 /**
- * @brief Utility files which are used wherever
+ * @brief Utility functions
  * 
+ * @param skip or char *skip is used to indicate that characters between quotes
+ * are not meant to be evaluated
  */
 bool	is_quotes_closed(char *input);
-bool	is_delim(char c, char *delimiters);
-bool	is_skip(char c, char *skip);
-int		count_occurences(char *input, char c);
-void	free_split(char **arr);
-void	err_msg(char *msg);
+bool	incl_char(char c, char *search_str);
+int		ft_search_c(char *str, char c, char skip);
+int		count_occurences_skip(char *str, char c, char *skip);
 
 /**
- * @brief Utily functions which are used in my main file
+ * @brief Utily functions which are used in my main file - REHAUL
  * 
  */
 t_cmd *structs_init(char *input, t_cmd *cmds, t_data *data);
 char	*add_to_arr(char *string, char *string_to_add, int size);
 bool	prep_cmd(char *str, t_cmd *cmd, t_data *data);
-char	*substitute_var(char *str, char *env_var, int env_len, t_data *data);
+
+
+/**
+ * @brief Helper functions for environment variable substitution
+ * 
+ * @param env_len is determined within get_env and excludes the $ sign
+ * therefore if the dollar sign needs to be considered it's needs to be
+ * incremented by 1
+ * 
+ * @note erase_wrg_var is used if the environment variable is not valid
+ * @note copy_before is used in order to copy all chars from string before the env.
+ * variable
+*/
+int		copy_before(char **temp, char *str, t_data *data);
+char	*erase_wrg_var(char *str, int start, int env_len);
 char	*get_env(char *str, t_data *data);
-
-int	ft_search_c(char *str, char c, char skip);
-int	count_occurences_skip(char *str, char c, char skip);
-
-
-// char **ft_split_ultimate(char *line, char *delim_skip, char *delim_keep, char *keep);
-
-
+char	*substitute_var(char *str, char *env_var, int env_len, t_data *data);
+bool	env_res(char **str, t_data *data);
 
 
 

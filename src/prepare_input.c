@@ -6,54 +6,26 @@
 /*   By: mwilsch <mwilsch@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 11:52:23 by verdant           #+#    #+#             */
-/*   Updated: 2023/03/03 16:53:45 by mwilsch          ###   ########.fr       */
+/*   Updated: 2023/03/03 21:25:28 by mwilsch          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-
-
-	// char *delimt_set = " <>";
-	// char *skip = "\'\"";
-	
-	// for (int i = 0; arr[i]; i++)
-	// 	printf("%s", arr[i]);
-
 #include "testing.h"
 
-
-// void leaks(void) // Delete when finished
-// {
-// 	system("leaks -q ./testing");
-// }
-
-bool	env_res(char **str, t_data *data)
+// Add this one to libft
+void	free_split(char **arr)
 {
-	const int	cnt = count_occurences_skip(*str, '$', '\'');
-	int	i;
+	int i;
 
 	i = 0;
-	// Checking if Env Var exits
-	if (*str[0] == '\0' || cnt <= 0)
-		return (true); // err_msg("Str empty or no $")
-
-	// I need to build a check where a $ inside a string does not get subsituted
-	// But if there is a $ outside of that I need to somehow still subsitute that - fuck yah
-
-
-	while (i < cnt) // cnt
+	while (arr[i])
 	{
-		data->env_start = ft_search_c(*str, '$', '\'') + 1;
-		*str = substitute_var(*str, get_env(*str, data), data->env_len + 1, data);
-		if (!*str)
-			return (false);
-		data->env_len = 0;
+		free(arr[i]);
 		i++;
 	}
-	// printf("%s", str);
-	return (true);
+	free(arr);
+	arr = NULL;
 }
-
-// echo -n '$HOME and some text'
 
 bool	cmd_res(char *str, t_cmd *cmd, t_data *data)
 {
@@ -84,7 +56,6 @@ bool	cmd_res(char *str, t_cmd *cmd, t_data *data)
 int main(int argc, char *argv[])
 {
 	char				*input = readline(""); // Reading the cmd line input
-	// char				*input = "echo -n \"$HOME and some text\"";
 	char				**arr;
 	t_cmd				*cmds;
 	t_data			data;
@@ -95,14 +66,17 @@ int main(int argc, char *argv[])
 	cmds = structs_init(input, cmds, &data);
 	// Fix for multiple quotes
 	if (!cmds || !is_quotes_closed(input)) 
+	{
+		puts("TEST");
 		return (1);
+	}
 	arr = ft_split(input, '|');
 	// Check if splitting was succesfull // Do this later
 	while (i < data.cmd_cnt)
 	{
 		if (!cmd_res(arr[i], &cmds[i], &data) || !env_res(&arr[i], &data))
 			return (1);
-		// printf("%s\n", cmds[i].name);
+		printf("%s\n", cmds[i].name);
 		printf("%s\n", arr[i]);
 		i++;
 	}
@@ -111,7 +85,7 @@ int main(int argc, char *argv[])
 
 // With the remaining string I need to take care of two things
 // 1. Quotation
-	// 1.1 Everything between a quote will not be splitted even if a other delimiter is encounted
+	// 1.1 Everything between a quote will not be splitted even if a other delim is encounted
 	// 1.2 The quote itself is not a reason to split either
 	// 1.3 The quotes need to be preserved for further evulation later one
 // 2. Redirects 
