@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   testing.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Verdant <Verdant@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mwilsch <mwilsch@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 20:22:26 by mwilsch           #+#    #+#             */
-/*   Updated: 2023/03/02 17:20:15 by Verdant          ###   ########.fr       */
+/*   Updated: 2023/03/03 13:22:27 by mwilsch          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,9 @@ typedef struct s_data {
 bool	is_quotes_closed(char *input);
 bool	is_delim(char c, char *delimiters);
 bool	is_skip(char c, char *skip);
+bool	str_literal(char *str, int occur);
 int		count_occurences(char *input, char c);
+int		ft_find_occur(char *str, char c, int occur);
 void	free_split(char **arr);
 void	err_msg(char *msg);
 
@@ -64,9 +66,9 @@ void	err_msg(char *msg);
  * 
  */
 t_cmd *structs_init(char *input, t_cmd *cmds, t_data *data);
-char	*add_to_arr(char *string,char *string_to_add, int size);
+char	*add_to_arr(char *string, char *string_to_add, int size);
 bool	prep_cmd(char *str, t_cmd *cmd, t_data *data);
-char	*substitute_var(char *str, char *env_var, int cmd_len, t_data *data);
+char	*substitute_var(char *str, char *env_var, int env_len, t_data *data);
 char	*get_env(char *str, t_data *data);
 
 

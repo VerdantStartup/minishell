@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prepare_input.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Verdant <Verdant@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mwilsch <mwilsch@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 11:52:23 by verdant           #+#    #+#             */
-/*   Updated: 2023/03/02 19:20:25 by Verdant          ###   ########.fr       */
+/*   Updated: 2023/03/03 13:22:00 by mwilsch          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,15 +33,18 @@ bool	env_res(char *str, t_data *data)
 
 	i = 0;
 	// Checking if Env Var exits
-	if (str[0] == '\0' || cnt <= 0 || str_literal(str));
-		return (err_msg("Str empty or no $"), true);
+	if (str[0] == '\0' || cnt <= 0)
+		return (true); // err_msg("Str empty or no $")
 
 	// I need to build a check where a $ inside a string does not get subsituted
 	// But if there is a $ outside of that I need to somehow still subsitute that - fuck yah
 
 	while (i < cnt)
 	{
-		str = substitute_var(str, get_env(str, data), data->env_len + 1, data);
+		if (!str_literal(str, i))
+			str = substitute_var(str, get_env(str, data), data->env_len + 1, data);
+			if (!str)
+				return (false);
 		data->env_len = 0;
 		i++;
 	}
@@ -49,7 +52,7 @@ bool	env_res(char *str, t_data *data)
 	return (true);
 }
 
-// echo -n "$HOME and some text"
+// echo -n '$HOME and some text'
 
 bool	cmd_res(char *str, t_cmd *cmd, t_data *data)
 {
@@ -97,7 +100,8 @@ int main(int argc, char *argv[])
 	{
 		if (!cmd_res(arr[i], &cmds[i], &data) || !env_res(arr[i], &data))
 			return (1);
-		// printf("%d\n", arr[i][0]);
+		// printf("%s\n", cmds[i].name);
+		// printf("%s\n", arr[i]);
 		i++;
 	}
 }

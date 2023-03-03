@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Verdant <Verdant@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mwilsch <mwilsch@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 12:02:25 by verdant           #+#    #+#             */
-/*   Updated: 2023/03/02 19:15:14 by Verdant          ###   ########.fr       */
+/*   Updated: 2023/03/03 13:14:31 by mwilsch          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,20 +103,67 @@ void	err_msg(char *msg)
 	printf("%s", msg);
 }
 
-bool str_literal(char *str)
+int	ft_find_occur(char *str, char c, int occur)
 {
-	const int found = ft_strclen(str, '$');
-	int i;
-	
+	int	i;
+	int	cnt;
+	static int d;
+
 	i = 0;
-
-
-	// Assuming the quotes are always closed bc I have a extra check for that in my main
-
+	cnt = 0;
+	// printf("In find at %d:\n%s\n", d, str);
+	d++;
 	while (str[i])
 	{
-		if (str[i] == '\'')
-		
-	
+		if (str[i] == c)
+			cnt++;
+		if (cnt == occur)
+			return (i);
+		i++;
 	}
+	return (-1); // Char at occurence not found
 }
+
+// Assuming the quotes are always closed 
+// bc I have a extra check for that in my main
+
+bool str_literal(char *str, int occur)
+{
+	const int	dollar_at = ft_find_occur(str, '$', occur + 1);
+	static int open = 1;
+	// static int closed = 2;
+	int	quote_open;
+	// int	quote_clos;
+	
+	quote_open = ft_find_occur(str, '\'', open);
+	// quote_clos = ft_find_occur(str, '\'', closed);
+	open += 2;
+	// closed += 2;
+
+	// printf("O: %d C: %d Dol: %d\n", quote_open, quote_clos, dollar_at);
+	if (quote_open == -1)
+		return (false);
+	// If dollar_at (index of $) is bigger then quote_open (index of opening ')
+	// then the dollar is inside of a string literal
+	return (dollar_at > quote_open);
+}
+// bool str_literal(char *str)
+// {
+// 	// static int	dollar;
+// 	// const int	quote_1 = ft
+// 	// const int	quote_2 = ft
+
+// '$PATH'
+
+// 	// if (dollar == 0)
+// 	// 	dollar = ft_strclen(str, '$');
+// 	// else
+// 	// 	dollar = ft_strclen(str + dollar + 1, '$');
+	
+// 	// printf("Dollar is at %d\tQuote is at %d\n", dollar, quote);
+// 	printf("%d\n", ft_find_at(str, '$', 2));
+// 	// return (dollar > quote);
+// 	return (true);
+// }
+
+// -n '$PATH' "$HOME"
