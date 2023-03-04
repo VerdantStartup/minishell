@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: verdant <verdant@student.42.fr>            +#+  +:+       +#+         #
+#    By: mwilsch <mwilsch@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/21 14:13:12 by verdant           #+#    #+#              #
-#    Updated: 2022/12/25 11:30:52 by verdant          ###   ########.fr        #
+#    Updated: 2023/03/04 12:23:55 by mwilsch          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -72,6 +72,7 @@ all:		$(NAME)
 
 $(NAME):	$(OBJ)
 			@$(AR) $(NAME) $(OBJ)
+			@echo $(C_GREEN)"Libft complied"$(C_RESET)
 
 $(OBJ_DIR)%.o : $(SRC_DIR)%.c | $(OBJF)
 			@$(CC) $(CFLAGS) $(INCLUDE) -c $< -o $@

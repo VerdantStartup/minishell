@@ -6,51 +6,88 @@
 /*   By: mwilsch <mwilsch@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/07 13:57:10 by mwilsch           #+#    #+#             */
-/*   Updated: 2023/03/03 14:44:37 by mwilsch          ###   ########.fr       */
+/*   Updated: 2023/03/04 14:36:41 by mwilsch          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+
 #include <stdio.h>
-#include <unistd.h>
 #include <stdlib.h>
+#include <unistd.h>
+#include <string.h>
+#include <fcntl.h>
 
-// The goal here is to trying to find ls in path
-	// 1. Get PATH
-	// 2. Split it with : as a delimiter
-	// 3. Loop through all directories and run access with F_OK
-		// F_OK check if the files exsits
 
-// int main(void)
-// {
-// 	// 1. Get the PATH Environment Variable
-// 	char *path_var = getenv("PATH");
 
-// 	//	2. Split it every directory using : as delimiter
-// 	char **path_modfiable = ft_split(path_var, ':'); 
-// 	int i = 0;
-// 	while (path_modfiable[i] != NULL)
-// 	{
-// 		// Add the command we are looking for to the subdirectory
-// 		path_modfiable[i] = ft_strjoin(path_modfiable[i], "/ls");
-// 		// Check if executable exsits with access
-// 		if (access(path_modfiable[i], X_OK) == 0)
-// 		{
-// 			// printf("%s", path_modfiable[i]);
-// 			break;
-// 		}
-// 		i++;
-// 	}
-// 	// argv contains the command and the flag, and the EOF
-// 	char *argv[] = {"echo", "$HOME", NULL};
-// 	// Execute takes in the absolute path, command with flags, and NULL
-// 	execve(path_modfiable[i], argv, NULL);
+
+
+
+
+
+
+
+// #define BUFSIZE 1024
+
+// int main() {
+//     int pipefd[2];
+//     pid_t pid;
+//     char buf[BUFSIZE];
+//     char output[10000] = "";
+//     char *argv[] = {"ls", "-l", NULL};
+//     char *envp[] = {NULL};
+
+//     /* Create the pipe */
+//     if (pipe(pipefd) == -1) {
+//         perror("pipe");
+//         exit(EXIT_FAILURE);
+//     }
+
+//     /* Create the child process */
+//     pid = fork();
+//     if (pid == -1) {
+//         perror("fork");
+//         exit(EXIT_FAILURE);
+//     }
+
+//     if (pid == 0) {
+//         /* Child process */
+//         /* Close the unused end of the pipe */
+//         close(pipefd[0]);
+
+//         /* Redirect stdout to the write end of the pipe */
+//         dup2(pipefd[1], STDOUT_FILENO);
+
+//         /* Execute the ls command */
+//         if (execve("/bin/ls", argv, envp) == -1) {
+//             perror("execve");
+//             exit(EXIT_FAILURE);
+//         }
+//     } else {
+//         /* Parent process */
+//         /* Close the unused end of the pipe */
+//         close(pipefd[1]);
+
+//         /* Read the output from the read end of the pipe */
+//         while (read(pipefd[0], buf, BUFSIZE) > 0) {
+//             /* Concatenate to output string */
+//             strcat(output, buf);
+//         }
+
+//         /* Close the pipe */
+//         close(pipefd[0]);
+
+//         /* Print the output */
+//         // printf("%s", output);
+//     }
+
+//     return 0;
 // }
 
 // int main() {
-//     char *argv[] = {"ls", "-llibft", NULL};
+//     char *args[] = {"wc", "Makefile", "-l", NULL};
 //     char *envp[] = {NULL};
 
-//     int ret = execve("/bin/ls", argv, envp);
+//     int ret = execve("/usr/bin/wc", args, envp);
 //     if (ret == -1) {
 //         perror("execve");
 //         return 1;
@@ -60,30 +97,25 @@
 // }
 
 
+// This is how I can capture output of a file and then redirect it into a fd
+int main() {
+    int fd = open("file.txt", O_CREAT | O_WRONLY | O_TRUNC, 0644);
+    char *args[] = {"/bin/ls", "-l", NULL};
+    char *envp[] = {NULL};
 
-
-// char *getenv(const char *name);
-
-// // Example
-// #include <stdio.h>
-// #include <stdlib.h>
-
-// int main() {
-//     char *value = getenv("HOME");
-//     if (value == NULL) {
-//         perror("getenv");
-//         return 1;
-//     }
-
-//     printf("HOME=%s", value);
-//     return 0;
-// }
+		
+    
+		dup2(fd, STDOUT_FILENO);
 
 
 
-// int	main(void)
-// {
-// 	printf("%d", (1 % 2));
-// }
+    
+		execve("/bin/ls", args, envp);
 
 
+    printf("Hello, world!\n");
+		write(1, "YAHH", 4);
+    close(fd);
+
+    return 0;
+}

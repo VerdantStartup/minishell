@@ -6,7 +6,7 @@
 /*   By: mwilsch <mwilsch@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 20:22:26 by mwilsch           #+#    #+#             */
-/*   Updated: 2023/03/03 21:30:59 by mwilsch          ###   ########.fr       */
+/*   Updated: 2023/03/04 13:46:43 by mwilsch          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,11 @@ enum tokens {
 
 
 typedef struct s_command {
-	char	*name;           // The name of the command
-	int		num_args;         // The number of arguments for the command
-	char	**args;          // The names of the arguments for the command
-	char	**oper;					// Operaters & their files
-	void (*func)();       // The function pointer to the implementation code
+	char	*name;			//	The name of the command
+	int		num_args;		//	The number of arguments for the command
+	char	**args;			//	The names of the arguments for the command
+	char	**oper;			//	Operaters & their files
+	void (*func)();		//	The function pointer to the implementation code
 } t_cmd;
 
 typedef struct s_data {
@@ -45,17 +45,17 @@ typedef struct s_data {
 } t_data;
 
 
-// void	err_msg(char *msg);
 /**
  * @brief Utility functions
  * 
  * @param skip or char *skip is used to indicate that characters between quotes
  * are not meant to be evaluated
  */
-bool	is_quotes_closed(char *input);
+bool	are_quotes_even(char *input);
 bool	incl_char(char c, char *search_str);
 int		ft_search_c(char *str, char c, char skip);
 int		count_occurences_skip(char *str, char c, char *skip);
+void	err_msg(char *msg);
 
 /**
  * @brief Utily functions which are used in my main file - REHAUL
@@ -73,16 +73,22 @@ bool	prep_cmd(char *str, t_cmd *cmd, t_data *data);
  * therefore if the dollar sign needs to be considered it's needs to be
  * incremented by 1
  * 
- * @note erase_wrg_var is used if the environment variable is not valid
+ * 
  * @note copy_before is used in order to copy all chars from string before the env.
  * variable
 */
 int		copy_before(char **temp, char *str, t_data *data);
-char	*erase_wrg_var(char *str, int start, int env_len);
 char	*get_env(char *str, t_data *data);
 char	*substitute_var(char *str, char *env_var, int env_len, t_data *data);
 bool	env_res(char **str, t_data *data);
 
 
+// Redirects
+
+int		scan_string(char *str, int found);
+bool	redirect_pars(char **str, t_data *data);
+
+// Unorganised
+char	*delete_substr(char *str, int start, int env_len);
 
 #endif

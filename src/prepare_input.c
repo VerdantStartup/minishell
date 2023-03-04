@@ -6,7 +6,7 @@
 /*   By: mwilsch <mwilsch@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 11:52:23 by verdant           #+#    #+#             */
-/*   Updated: 2023/03/03 21:25:28 by mwilsch          ###   ########.fr       */
+/*   Updated: 2023/03/04 17:45:59 by mwilsch          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ bool	cmd_res(char *str, t_cmd *cmd, t_data *data)
 int main(int argc, char *argv[])
 {
 	char				*input = readline(""); // Reading the cmd line input
+	// char				*input = "ls -l >>  output"; // Use when DEBUG=1
 	char				**arr;
 	t_cmd				*cmds;
 	t_data			data;
@@ -65,7 +66,7 @@ int main(int argc, char *argv[])
 	i = 0;
 	cmds = structs_init(input, cmds, &data);
 	// Fix for multiple quotes
-	if (!cmds || !is_quotes_closed(input)) 
+	if (!cmds || !are_quotes_even(input)) 
 	{
 		puts("TEST");
 		return (1);
@@ -76,20 +77,9 @@ int main(int argc, char *argv[])
 	{
 		if (!cmd_res(arr[i], &cmds[i], &data) || !env_res(&arr[i], &data))
 			return (1);
-		printf("%s\n", cmds[i].name);
-		printf("%s\n", arr[i]);
+		if (!redirect_pars(&arr[i], &data));
+		// printf("|%s|\n", arr[i]);
+		// printf("%s\n", cmds[i].name);
 		i++;
 	}
 }
-
-
-// With the remaining string I need to take care of two things
-// 1. Quotation
-	// 1.1 Everything between a quote will not be splitted even if a other delim is encounted
-	// 1.2 The quote itself is not a reason to split either
-	// 1.3 The quotes need to be preserved for further evulation later one
-// 2. Redirects 
-	// 1. If a redirect is encountered the string will be splitted
-	// 2. The redirect needs to be preserved
-	
-

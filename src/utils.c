@@ -6,18 +6,18 @@
 /*   By: mwilsch <mwilsch@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 12:02:25 by verdant           #+#    #+#             */
-/*   Updated: 2023/03/03 21:25:34 by mwilsch          ###   ########.fr       */
+/*   Updated: 2023/03/04 12:12:02 by mwilsch          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "testing.h"
 
-// void	err_msg(char *msg)
-// {
-// 	printf("%s", msg);
-// }
+void	err_msg(char *msg)
+{
+	printf("%s", msg);
+}
 
-bool	is_quotes_closed(char *input)
+bool	are_quotes_even(char *input)
 {
 	int	i;
 	int	cnt;
@@ -54,6 +54,22 @@ bool	incl_char(char c, char *search_str)
 	}
 	return (false);
 }
+
+// bool	incl_char_cnt(char c, char *search_str, int cnt)
+// {
+// 	int	i;
+
+// 	i = 0;
+// 	if (!search_str)
+// 		return (false);
+// 	while (search_str[i])
+// 	{
+// 		if (c == search_str[i])
+// 			return (true);
+// 		i++;
+// 	}
+// 	return (false);
+// }
 
 int	ft_search_c(char *str, char c, char skip)
 {

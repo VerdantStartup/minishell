@@ -6,7 +6,7 @@
 /*   By: mwilsch <mwilsch@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/11 15:13:57 by mwilsch           #+#    #+#             */
-/*   Updated: 2023/03/03 21:00:34 by mwilsch          ###   ########.fr       */
+/*   Updated: 2023/03/04 12:11:32 by mwilsch          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -204,7 +204,7 @@ char **ft_split_ultimate(char *line, char *delim_set, char *skip)
 	return (str_arr);
 }
 
-bool	is_quotes_closed(char *cmd_line_input)
+bool	are_quotes_even(char *cmd_line_input)
 {
 	int	i;
 	int	cnt;
@@ -380,7 +380,7 @@ int main(int argc, char *argv[])
 	char *delimt_set = " <>";
 	char *skip = "\'\"";
 	
-	if (!is_quotes_closed(cmd_line_input)) // Is this okay?
+	if (!are_quotes_even(cmd_line_input)) // Is this okay?
 		return (1);
 
 	char **arr = ft_split_ultimate(cmd_line_input, delimt_set, skip);

@@ -5,10 +5,13 @@ LIBFT			= libft
 SRC_DIR		= src/
 OBJ_DIR		= obj/
 CC				= gcc
-CFLAGS		= -lreadline -I include
+CFLAGS		= # -Werror -Wall -Wextra
+INCFLAGS	= -I include
+LDFLAGS		= -lreadline
 RM				= rm -rf
 
-SRC_FILES	=	prepare_input utils helper_main env_substitution\
+SRC_FILES	=	prepare_input utils helper_main env_substitution redirects_handeling\
+						helper_funcs\
 
 SRC			=	$(addprefix $(SRC_DIR), $(addsuffix .c, $(SRC_FILES)))
 OBJ			=	$(addprefix $(OBJ_DIR), $(addsuffix .o, $(SRC_FILES)))
@@ -27,17 +30,16 @@ endif
 
 start:
 			@make -C $(LIBFT)
-			@echo $(C_GREEN)"Libft complied"$(C_RESET)
 			@cp $(LIBFT)/libft.a .
 			@make all
 
 all: $(NAME)
 $(NAME): $(OBJ)
-	@$(CC) $(CFLAGS) $(OBJ) libft.a -o $(NAME)
+	@$(CC) $(CFLAGS) $(OBJ) $(LDFLAGS)  libft.a -o $(NAME)
 	@echo $(C_GREEN)"Test compilied"$(C_RESET)
 
 $(OBJ_DIR)%.o: $(SRC_DIR)%.c | $(OBJF)
-	@$(CC) $(CFLAGS) -c $< -o $@
+	@$(CC) $(CFLAGS) $(INCFLAGS) -c $< -o $@
 
 $(OBJF):
 	@mkdir -p $(OBJ_DIR)

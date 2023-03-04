@@ -6,7 +6,7 @@
 /*   By: mwilsch <mwilsch@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/03 20:40:10 by mwilsch           #+#    #+#             */
-/*   Updated: 2023/03/03 21:19:25 by mwilsch          ###   ########.fr       */
+/*   Updated: 2023/03/04 13:46:00 by mwilsch          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ char	*get_env(char *str, t_data *data)
 	int		i;
 
 	i = data->env_start;
-	while (str[i] && !incl_char(str[i], data->delim) && !incl_char(str[i], data->skip))
+	while (str[i] && !incl_char(str[i], " <>\'\""))
 	{
 		data->env_len++;
 		i++;
@@ -50,16 +50,8 @@ char	*get_env(char *str, t_data *data)
 	return (env_var);
 }
 
-char	*erase_wrg_var(char *str, int start, int env_len)
-{
-	int	copy_from;
+// 
 
-	copy_from = start + env_len;
-	while (str[copy_from])
-		str[start++] = str[copy_from++];
-	str[start] = '\0';
-	return (str);
-}
 
 
 char	*substitute_var(char *str, char *env_var, int env_len, t_data *data)
@@ -72,7 +64,7 @@ char	*substitute_var(char *str, char *env_var, int env_len, t_data *data)
 	i = 0;
 	k = 0;
 	if (!env_var)
-		return (erase_wrg_var(str, data->env_start - 1, data->env_len + 1));
+		return (delete_substr(str, data->env_start - 1, data->env_len + 1));
 	temp = malloc(sizeof(char) * (data->env_size + 1));
 	if (!temp || !str)
 		return (NULL);
