@@ -6,7 +6,7 @@
 /*   By: mwilsch <mwilsch@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 12:02:25 by verdant           #+#    #+#             */
-/*   Updated: 2023/03/04 12:12:02 by mwilsch          ###   ########.fr       */
+/*   Updated: 2023/03/05 15:06:39 by mwilsch          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,10 @@
 
 void	err_msg(char *msg)
 {
-	printf("%s", msg);
+	if (!msg)
+		return ;
+	printf("err: %s", msg);
+	return ;
 }
 
 bool	are_quotes_even(char *input)

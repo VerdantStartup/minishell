@@ -6,7 +6,7 @@
 /*   By: mwilsch <mwilsch@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 11:52:23 by verdant           #+#    #+#             */
-/*   Updated: 2023/03/04 17:45:59 by mwilsch          ###   ########.fr       */
+/*   Updated: 2023/03/05 15:38:39 by mwilsch          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ bool	cmd_res(char *str, t_cmd *cmd, t_data *data)
 int main(int argc, char *argv[])
 {
 	char				*input = readline(""); // Reading the cmd line input
-	// char				*input = "ls -l >>  output"; // Use when DEBUG=1
+	// char				*input = "ls <     >"; // Use when DEBUG=1
 	char				**arr;
 	t_cmd				*cmds;
 	t_data			data;
@@ -77,7 +77,7 @@ int main(int argc, char *argv[])
 	{
 		if (!cmd_res(arr[i], &cmds[i], &data) || !env_res(&arr[i], &data))
 			return (1);
-		if (!redirect_pars(&arr[i], &data));
+		redirect_pars(&arr[i], &data); // make a if out of this
 		// printf("|%s|\n", arr[i]);
 		// printf("%s\n", cmds[i].name);
 		i++;
