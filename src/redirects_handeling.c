@@ -6,7 +6,7 @@
 /*   By: mwilsch <mwilsch@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/04 12:07:08 by mwilsch           #+#    #+#             */
-/*   Updated: 2023/03/06 13:09:30 by mwilsch          ###   ########.fr       */
+/*   Updated: 2023/03/06 16:50:25 by mwilsch          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,21 +100,56 @@ bool	check_syntax(char *str, char c, int cnt)
 
 	// printf("|%s|\n", str);
 
-bool	redirect_rules(char *str, char symbol, int cnt)
+
+
+
+
+
+/**
+ * @brief Semantic meaning of check_sematics
+ * 
+ * @param symbol is the redirection character itself
+ * @note the case I'm considering in this version of the code is that
+ * I'm only checking one redirect pair (red and red_arg) so at this
+ * point it is still not 100% sure if all erros are considered. That
+ * being said creating a file before I know if the code error's
+ * is the mistake I want to forgo
+*/
+bool	check_sematics(char *str, char symbol, int cnt, t_data *data)
 {
-	int spc_len;
+	char	*arg;
+	int		spc_len;
 	
 	spc_len = 0;
 	// Earsing Spaces between redirect and red_arg
 	while (str[spc_len + cnt] && incl_char(str[spc_len + cnt], " "))
 		spc_len++;
 	// Change if I refactor del_substr to a bool func
-	printf("|%s|%d\n", str, spc_len);
 	str = del_substr(str, cnt, spc_len);
-	printf("|%s|\n", str);
+	// printf("|%s|\n", str);
 	if (!str)
 		return (false);
-	
+	arg = del_substr(ft_strdup(str), 0, cnt);
+	// Guard Clauses Technique
+		// This is more readable but this would only safe lines if assign
+		// the fd inside of the return statement
+	if (symbol == '>' && cnt == 1)
+	{
+		data->fd = open(arg, O_CREAT | O_WRONLY | O_TRUNC, 0644);
+		return (true);
+	}
+	if (symbol == '>' && cnt == 2)
+	{
+		data->fd = open(arg, O_CREAT | O_WRONLY | O_APPEND, 0644);
+		return (true);
+	}
+	// Symbol either '<'
+	if (symbol == '<' && cnt == 1 && access(arg, F_OK) == -1)
+	{
+		err_msg("No such file or directory");
+		return (false); // bash: test: No such file or directory
+	}
+	// Idk if there is anything I need to do for '<<' yet
 	return (true);
 }
 
@@ -131,6 +166,8 @@ bool	redirect_pars(char **str, t_data *data)
 	cutout = cut_out(*str, found, data);
 	if (!cutout || !check_syntax(cutout, cutout[0], data->redir_cnt))
 		return (false);
-	redirect_rules(cutout, cutout[0], data->redir_cnt);
+	if (!check_sematics(cutout, cutout[0], data->redir_cnt, data))
+		return (false);
 	return (true);
+	
 }

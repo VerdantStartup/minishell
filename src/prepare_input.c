@@ -6,7 +6,7 @@
 /*   By: mwilsch <mwilsch@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 11:52:23 by verdant           #+#    #+#             */
-/*   Updated: 2023/03/05 15:38:39 by mwilsch          ###   ########.fr       */
+/*   Updated: 2023/03/06 14:02:59 by mwilsch          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,7 @@ int main(int argc, char *argv[])
 	{
 		if (!cmd_res(arr[i], &cmds[i], &data) || !env_res(&arr[i], &data))
 			return (1);
+		
 		redirect_pars(&arr[i], &data); // make a if out of this
 		// printf("|%s|\n", arr[i]);
 		// printf("%s\n", cmds[i].name);
