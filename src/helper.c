@@ -6,7 +6,7 @@
 /*   By: mwilsch <mwilsch@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 12:02:25 by verdant           #+#    #+#             */
-/*   Updated: 2023/03/05 15:06:39 by mwilsch          ###   ########.fr       */
+/*   Updated: 2023/03/06 17:42:40 by mwilsch          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,22 +57,6 @@ bool	incl_char(char c, char *search_str)
 	}
 	return (false);
 }
-
-// bool	incl_char_cnt(char c, char *search_str, int cnt)
-// {
-// 	int	i;
-
-// 	i = 0;
-// 	if (!search_str)
-// 		return (false);
-// 	while (search_str[i])
-// 	{
-// 		if (c == search_str[i])
-// 			return (true);
-// 		i++;
-// 	}
-// 	return (false);
-// }
 
 int	ft_search_c(char *str, char c, char skip)
 {

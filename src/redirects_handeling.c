@@ -6,7 +6,7 @@
 /*   By: mwilsch <mwilsch@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/04 12:07:08 by mwilsch           #+#    #+#             */
-/*   Updated: 2023/03/06 16:50:25 by mwilsch          ###   ########.fr       */
+/*   Updated: 2023/03/06 19:22:25 by mwilsch          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,13 +98,6 @@ bool	check_syntax(char *str, char c, int cnt)
 	return (true);
 }
 
-	// printf("|%s|\n", str);
-
-
-
-
-
-
 /**
  * @brief Semantic meaning of check_sematics
  * 
@@ -131,18 +124,10 @@ bool	check_sematics(char *str, char symbol, int cnt, t_data *data)
 		return (false);
 	arg = del_substr(ft_strdup(str), 0, cnt);
 	// Guard Clauses Technique
-		// This is more readable but this would only safe lines if assign
-		// the fd inside of the return statement
 	if (symbol == '>' && cnt == 1)
-	{
-		data->fd = open(arg, O_CREAT | O_WRONLY | O_TRUNC, 0644);
-		return (true);
-	}
+		return (data->fd = open(arg, O_CREAT | O_WRONLY | O_TRUNC, 0644) , true);
 	if (symbol == '>' && cnt == 2)
-	{
-		data->fd = open(arg, O_CREAT | O_WRONLY | O_APPEND, 0644);
-		return (true);
-	}
+		return (data->fd = open(arg, O_CREAT | O_WRONLY | O_APPEND, 0644), true);
 	// Symbol either '<'
 	if (symbol == '<' && cnt == 1 && access(arg, F_OK) == -1)
 	{
@@ -153,7 +138,13 @@ bool	check_sematics(char *str, char symbol, int cnt, t_data *data)
 	return (true);
 }
 
-
+/**
+ * @brief redirect main wrapper
+ * 
+ * @note I have too do 2 more things here
+ * 1. Make it work for multiple redirects
+ * 2. What happens after I'm done with all of this
+*/
 bool	redirect_pars(char **str, t_data *data)
 {
 	char *cutout;

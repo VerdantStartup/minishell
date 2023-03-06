@@ -1,30 +1,59 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   prepare_input.c                                    :+:      :+:    :+:   */
+/*   cmd_resolution.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mwilsch <mwilsch@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/02/28 11:52:23 by verdant           #+#    #+#             */
-/*   Updated: 2023/03/06 14:02:59 by mwilsch          ###   ########.fr       */
+/*   Created: 2023/03/06 17:21:11 by mwilsch           #+#    #+#             */
+/*   Updated: 2023/03/06 19:07:22 by mwilsch          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "testing.h"
 
-// Add this one to libft
-void	free_split(char **arr)
+
+char	*add_to_arr(char *string,char *str_to_add, int size)
 {
-	int i;
+	int	i;
+	char	*temp;
 
 	i = 0;
-	while (arr[i])
+	temp = malloc(sizeof(char) * (size + 1));
+	if (!temp)
+		return (NULL);
+	temp[size] = '\0';
+	while (i < size)
 	{
-		free(arr[i]);
+		temp[i] = str_to_add[i];
 		i++;
 	}
-	free(arr);
-	arr = NULL;
+	free(string);
+	return (temp);
+}
+
+bool	prep_cmd(char *str, t_cmd *cmd, t_data *data)
+{
+	int	len;
+	int i;
+	int k;
+
+	len = 0;
+	i = 1; // because name[0] = /
+	k = 0;
+	while (str[k] && str[k] == ' ') // Skipping over spaces
+		k++;
+	while (str[len + k] && !incl_char(str[len + k], data->delim))
+		len++;
+	data->spc_cmd_len = len + k;
+	cmd->name = malloc(sizeof(char) * (len + 2));
+	if (!cmd->name)
+		return (false);
+	cmd->name[len + 1] = '\0';
+	cmd->name[0] = '/';
+	while (i < len + 1)
+		cmd->name[i++] = str[k++];
+	return (true);
 }
 
 bool	cmd_res(char *str, t_cmd *cmd, t_data *data)
@@ -41,7 +70,8 @@ bool	cmd_res(char *str, t_cmd *cmd, t_data *data)
 		path_mod[i] = ft_strjoin(path_mod[i], cmd->name);
 		if (access(path_mod[i], X_OK) == 0)
 		{
-			cmd->name = add_to_arr(cmd->name, path_mod[i], ft_strlen(path_mod[i]));
+			// I could refactor add_to_arr to be a bool and then not return it into cmd name
+			cmd->name = add_to_arr(cmd->name, path_mod[i], ft_strlen(path_mod[i])); 
 			break;
 		}
 		i++;
@@ -51,36 +81,4 @@ bool	cmd_res(char *str, t_cmd *cmd, t_data *data)
 	free_split(path_mod);
 	ft_memmove(str, str + data->spc_cmd_len, ft_strlen(str));
 	return (true);
-}
-
-int main(int argc, char *argv[])
-{
-	char				*input = readline(""); // Reading the cmd line input
-	// char				*input = "ls <     >"; // Use when DEBUG=1
-	char				**arr;
-	t_cmd				*cmds;
-	t_data			data;
-	int					i;
-	
-	
-	i = 0;
-	cmds = structs_init(input, cmds, &data);
-	// Fix for multiple quotes
-	if (!cmds || !are_quotes_even(input)) 
-	{
-		puts("TEST");
-		return (1);
-	}
-	arr = ft_split(input, '|');
-	// Check if splitting was succesfull // Do this later
-	while (i < data.cmd_cnt)
-	{
-		if (!cmd_res(arr[i], &cmds[i], &data) || !env_res(&arr[i], &data))
-			return (1);
-		
-		redirect_pars(&arr[i], &data); // make a if out of this
-		// printf("|%s|\n", arr[i]);
-		// printf("%s\n", cmds[i].name);
-		i++;
-	}
 }

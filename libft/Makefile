@@ -6,7 +6,7 @@
 #    By: mwilsch <mwilsch@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/21 14:13:12 by verdant           #+#    #+#              #
-#    Updated: 2023/03/04 12:23:55 by mwilsch          ###   ########.fr        #
+#    Updated: 2023/03/06 17:34:08 by mwilsch          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -43,10 +43,13 @@ FT_LST				=	ft_lstadd_back ft_lstadd_front ft_lstclear ft_lstdelone \
 								ft_lstiter ft_lstlast ft_lstmap ft_lstnew ft_lstsize
 
 FT_PRINTF_DIR	=	ft_printf/
-FT_PRINTF			= ft_printf ft_printf_utils ft_base_itoa
+FT_PRINTF			=	ft_printf ft_printf_utils ft_base_itoa
 
-GNL_DIR				= get_next_line/
-GNL						= get_next_line get_next_line_utils
+GNL_DIR				=	get_next_line/
+GNL						=	get_next_line get_next_line_utils
+
+MYOWN_DIR			=	ft_myown/
+MYOWN					=	free_split
 
 SRC_FILES+=$(addprefix $(FT_IS_DIR),$(FT_IS))
 SRC_FILES+=$(addprefix $(FT_MEM_DIR),$(FT_MEM))
@@ -56,6 +59,7 @@ SRC_FILES+=$(addprefix $(FT_STR_DIR),$(FT_STR))
 SRC_FILES+=$(addprefix $(FT_LST_DIR),$(FTLST))
 SRC_FILES+=$(addprefix $(FT_PRINTF_DIR),$(FT_PRINTF))
 SRC_FILES+=$(addprefix $(GNL_DIR),$(GNL))
+SRC_FILES+=$(addprefix $(MYOWN_DIR),$(MYOWN))
 
 
 SRC					=	$(addprefix $(SRC_DIR), $(addsuffix .c, $(SRC_FILES)))
@@ -72,7 +76,6 @@ all:		$(NAME)
 
 $(NAME):	$(OBJ)
 			@$(AR) $(NAME) $(OBJ)
-			@echo $(C_GREEN)"Libft complied"$(C_RESET)
 
 $(OBJ_DIR)%.o : $(SRC_DIR)%.c | $(OBJF)
 			@$(CC) $(CFLAGS) $(INCLUDE) -c $< -o $@
@@ -87,6 +90,7 @@ $(OBJF):
 			@mkdir -p $(OBJ_DIR)$(FT_LST_DIR)
 			@mkdir -p $(OBJ_DIR)$(FT_PRINTF_DIR)
 			@mkdir -p $(OBJ_DIR)$(GNL_DIR)
+			@mkdir -p $(OBJ_DIR)$(MYOWN_DIR)
 
 clean:
 			@$(RM) -r $(OBJ_DIR)

@@ -6,7 +6,7 @@
 /*   By: mwilsch <mwilsch@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/03 20:40:10 by mwilsch           #+#    #+#             */
-/*   Updated: 2023/03/06 13:01:50 by mwilsch          ###   ########.fr       */
+/*   Updated: 2023/03/06 19:14:23 by mwilsch          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,16 +44,11 @@ char	*get_env(char *str, t_data *data)
 	}
 	env_var = getenv(ft_substr(str, data->env_start, data->env_len));
 	if (!env_var)
-		return (free(env_var), NULL);
+		return (NULL);
 	size = ft_strlen(str) + ft_strlen(env_var);
 	data->env_size = size - (data->env_len + 1);
 	return (env_var);
 }
-
-// 
-
-
-
 
 char	*substitute_var(char *str, char *env_var, int env_len, t_data *data)
 {

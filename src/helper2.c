@@ -1,17 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   helper_funcs.c                                     :+:      :+:    :+:   */
+/*   helper2.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mwilsch <mwilsch@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/04 13:45:51 by mwilsch           #+#    #+#             */
-/*   Updated: 2023/03/06 13:09:07 by mwilsch          ###   ########.fr       */
+/*   Created: 2023/03/06 17:46:00 by mwilsch           #+#    #+#             */
+/*   Updated: 2023/03/06 19:28:02 by mwilsch          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "testing.h"
-
 
 /**
  * @brief Deletes a substr from a str
@@ -40,4 +39,20 @@ char	*del_substr(char *str, int start, int len)
 		str[start++] = str[copy_from++];
 	str[start] = '\0';
 	return (str);
+}
+
+
+/**
+ * @brief display error messages
+ * 
+ * @param err_token defines which error it is
+ * 
+ * @note I need to find a way to pass the right character such as > or >> as a 
+ * error and so on
+ * 
+ * tomorrrow, bruh
+*/
+bool error_syntax(char *str, t_err_token err_token)
+{
+	
 }

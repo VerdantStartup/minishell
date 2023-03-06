@@ -6,7 +6,7 @@
 /*   By: mwilsch <mwilsch@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 20:52:09 by mwilsch           #+#    #+#             */
-/*   Updated: 2023/03/06 17:58:56 by mwilsch          ###   ########.fr       */
+/*   Updated: 2023/03/06 17:41:21 by mwilsch          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,6 @@ t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *));
 
 // My own functions
 size_t	ft_strclen(const char *s, char c);
-void	free_split(char **arr);
+void		free_split(char **arr);
 
 #endif
