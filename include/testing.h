@@ -6,7 +6,7 @@
 /*   By: mwilsch <mwilsch@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 20:22:26 by mwilsch           #+#    #+#             */
-/*   Updated: 2023/03/05 14:08:01 by mwilsch          ###   ########.fr       */
+/*   Updated: 2023/03/06 13:03:44 by mwilsch          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ typedef struct s_data {
 	int		env_len;
 	int		env_start;
 	int		env_size;
+	int		redir_cnt;
 	char	*delim;
 	char	*skip;
 } t_data;
@@ -88,7 +89,10 @@ bool	env_res(char **str, t_data *data);
 int		scan_string(char *str, int found);
 bool	redirect_pars(char **str, t_data *data);
 
-// Unorganised
-char	*delete_substr(char *str, int start, int env_len);
+
+
+
+
+char	*del_substr(char *str, int start, int len);
 
 #endif

@@ -71,6 +71,7 @@ t_cmd *structs_init(char *input, t_cmd *cmds, t_data *data)
 	data->env_size = 0;
 	data->cmd_cnt = 1;
 	data->cmd_cnt += count_occurences_skip(input, '|', NULL);
+	data->redir_cnt = 0;
 	cmds = malloc(sizeof(t_cmd) * (data->cmd_cnt));
 	if (!cmds)
 		return (NULL);
