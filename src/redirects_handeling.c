@@ -6,7 +6,7 @@
 /*   By: mwilsch <mwilsch@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/04 12:07:08 by mwilsch           #+#    #+#             */
-/*   Updated: 2023/03/06 19:22:25 by mwilsch          ###   ########.fr       */
+/*   Updated: 2023/03/07 19:47:08 by mwilsch          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,11 @@
 int	scan_string(char *str, int found)
 {
 	int found2;
-	if (!str)
+	
+	if (!str || str[0] == '\0')
 		return (-1);
 	found = ft_search_c(str, '>', '\'');
 	found2 = ft_search_c(str, '<', '\'');
-	if (found != -1 && found2 != -1)
-		return (-1);
 	if (found != -1)
 		return (found);
 	if (found2 != -1)
@@ -77,14 +76,14 @@ bool	check_syntax(char *str, char c, int cnt)
 
 	i = cnt - 1;
 	if (cnt > 2) // minishell: syntax error near unexpected token `%c'\n
-		return (err_msg("unexpexted token\n"), false);
+		return (error_syntax(NULL, TOO_MANY));
 	while (str[i])
 	{
 		i++;
 		if (str[i] && ft_isalnum(str[i]))
 			break;
 		if (incl_char(str[i], "><"))
-			return (err_msg("unexpexted token 2\n"), false);
+			return (error_syntax(NULL, NO_ALNUM_1));
 	}
 	i = 0;
 	while (str[i])
@@ -93,7 +92,7 @@ bool	check_syntax(char *str, char c, int cnt)
 			break ;
 		i++;
 		if (str[i] == '\0')
-			return (err_msg("newline\n"), false); // minishell: syntax error near unexpected token `newline'
+			return (error_syntax(NULL, NEWLINE)); // minishell: syntax error near unexpected token `newline'
 	}
 	return (true);
 }
@@ -111,18 +110,16 @@ bool	check_syntax(char *str, char c, int cnt)
 bool	check_sematics(char *str, char symbol, int cnt, t_data *data)
 {
 	char	*arg;
+	char	*temp;
 	int		spc_len;
 	
 	spc_len = 0;
-	// Earsing Spaces between redirect and red_arg
 	while (str[spc_len + cnt] && incl_char(str[spc_len + cnt], " "))
 		spc_len++;
 	// Change if I refactor del_substr to a bool func
 	str = del_substr(str, cnt, spc_len);
-	// printf("|%s|\n", str);
-	if (!str)
-		return (false);
-	arg = del_substr(ft_strdup(str), 0, cnt);
+	temp = ft_strdup(str);
+	arg = del_substr(temp, 0, cnt);
 	// Guard Clauses Technique
 	if (symbol == '>' && cnt == 1)
 		return (data->fd = open(arg, O_CREAT | O_WRONLY | O_TRUNC, 0644) , true);
@@ -130,12 +127,8 @@ bool	check_sematics(char *str, char symbol, int cnt, t_data *data)
 		return (data->fd = open(arg, O_CREAT | O_WRONLY | O_APPEND, 0644), true);
 	// Symbol either '<'
 	if (symbol == '<' && cnt == 1 && access(arg, F_OK) == -1)
-	{
-		err_msg("No such file or directory");
-		return (false); // bash: test: No such file or directory
-	}
-	// Idk if there is anything I need to do for '<<' yet
-	return (true);
+		return (error_syntax(arg, NO_FILE));
+	return (free(temp), free(arg), true);
 }
 
 /**
@@ -144,21 +137,21 @@ bool	check_sematics(char *str, char symbol, int cnt, t_data *data)
  * @note I have too do 2 more things here
  * 1. Make it work for multiple redirects
  * 2. What happens after I'm done with all of this
+ * 3. what about multiple fd's?
 */
-bool	redirect_pars(char **str, t_data *data)
+bool	redirect_pars(char *str, t_data *data)
 {
 	char *cutout;
 	int	found;
 
 	// Checks also if str exsits
-	found = scan_string(*str, found);
-	if (*str[0] == '\0' || found == -1)
-		return (err_msg("empty str or no redirect or unexpexted token 3\n") , false); // change this err
-	cutout = cut_out(*str, found, data);
+	found = scan_string(str, found);
+	if (str[0] == '\0' || found == -1)
+		return (true);
+	cutout = cut_out(str, found, data);
 	if (!cutout || !check_syntax(cutout, cutout[0], data->redir_cnt))
 		return (false);
 	if (!check_sematics(cutout, cutout[0], data->redir_cnt, data))
 		return (false);
 	return (true);
-	
 }

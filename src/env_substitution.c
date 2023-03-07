@@ -6,7 +6,7 @@
 /*   By: mwilsch <mwilsch@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/03 20:40:10 by mwilsch           #+#    #+#             */
-/*   Updated: 2023/03/06 19:14:23 by mwilsch          ###   ########.fr       */
+/*   Updated: 2023/03/07 15:47:04 by mwilsch          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ int	copy_before(char **temp, char *str, t_data *data)
 char	*get_env(char *str, t_data *data)
 {
 	char	*env_var;
+	char	*temp;
 	int		size;
 	int		i;
 
@@ -42,11 +43,13 @@ char	*get_env(char *str, t_data *data)
 		data->env_len++;
 		i++;
 	}
-	env_var = getenv(ft_substr(str, data->env_start, data->env_len));
+	temp = ft_substr(str, data->env_start, data->env_len);;
+	env_var = getenv(temp); // this will result in a leak
 	if (!env_var)
-		return (NULL);
+		return (free(temp), NULL);
 	size = ft_strlen(str) + ft_strlen(env_var);
 	data->env_size = size - (data->env_len + 1);
+	free(temp);
 	return (env_var);
 }
 

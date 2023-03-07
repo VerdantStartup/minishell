@@ -6,7 +6,7 @@
 /*   By: mwilsch <mwilsch@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 20:22:26 by mwilsch           #+#    #+#             */
-/*   Updated: 2023/03/06 19:22:59 by mwilsch          ###   ########.fr       */
+/*   Updated: 2023/03/07 19:36:59 by mwilsch          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,10 @@
 # include "../libft/include/libft.h"
 
 typedef enum tokens {
-	UNEXP,
-	NEWLINE
+	NO_CMD,
+	TOO_MANY,
+	NO_ALNUM_1,
+	NEWLINE,
 	NO_FILE,
 	AMBIGOUS_REDIRECT,
 } t_err_token;
@@ -51,7 +53,7 @@ typedef struct s_data {
 	int		env_start;
 	int		env_size;
 	int		redir_cnt;
-	int		fd;					
+	int		fd;
 	char	*delim;
 	char	*skip;
 } t_data;
@@ -92,10 +94,10 @@ bool	env_res(char **str, t_data *data);
  * @brief All functions for redirection
 */
 
-char	*cut_out(char *str, int start, t_data *data)
-bool	check_sematics(char *str, char symbol, int cnt, t_data *data)
-bool	check_syntax(char *str, char c, int cnt)
-bool	redirect_pars(char **str, t_data *data);
+char	*cut_out(char *str, int start, t_data *data);
+// bool	check_sematics(char *str, char symbol, int cnt, t_data *data);
+bool	check_syntax(char *str, char c, int cnt);
+bool	redirect_pars(char *str, t_data *data);
 int		scan_string(char *str, int found);
 
 /**
@@ -109,5 +111,6 @@ bool	cmd_res(char *str, t_cmd *cmd, t_data *data);
 
 
 char	*del_substr(char *str, int start, int len);
+bool error_syntax(char *str, t_err_token err_tok);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: mwilsch <mwilsch@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 11:52:23 by verdant           #+#    #+#             */
-/*   Updated: 2023/03/06 19:26:54 by mwilsch          ###   ########.fr       */
+/*   Updated: 2023/03/07 19:41:45 by mwilsch          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@ t_cmd *structs_init(char *input, t_cmd *cmds, t_data *data)
 {	
 	if (input[0] == '\0') // I have to change this to reprompt
 		return (NULL);
-	// data = calloc(sizeof(t_data), 1);
 	data->delim = " <>";
+	data->spc_cmd_len = 0;
 	data->skip = "\'\"";
 	data->env_len = 0;
 	data->env_size = 0;
@@ -66,10 +66,10 @@ int main(int argc, char *argv[])
 	{
 		if (!cmd_res(arr[i], &cmds[i], &data) || !env_res(&arr[i], &data))
 			return (1);
-		redirect_pars(&arr[i], &data); // make a if out of this
-		// printf("|%s|\n", arr[i]);
-		// printf("%s\n", cmds[i].name);
+		if (!redirect_pars(arr[i], &data))
+			return (1);
+		// printf("CMDS:\t|%s|\n", cmds[i].name);
+		// printf("ARG:\t|%s|\n", arr[i]);
 		i++;
 	}
-	printf("%s", arr[0]);
 }

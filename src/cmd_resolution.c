@@ -6,7 +6,7 @@
 /*   By: mwilsch <mwilsch@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 17:21:11 by mwilsch           #+#    #+#             */
-/*   Updated: 2023/03/06 19:07:22 by mwilsch          ###   ########.fr       */
+/*   Updated: 2023/03/07 19:41:13 by mwilsch          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,11 @@ bool	prep_cmd(char *str, t_cmd *cmd, t_data *data)
 	return (true);
 }
 
+
+/**
+ * 
+ * @note del_substr at the end is to delete the cmd from the string
+*/
 bool	cmd_res(char *str, t_cmd *cmd, t_data *data)
 {
 	char *path_var = getenv("PATH");
@@ -77,8 +82,8 @@ bool	cmd_res(char *str, t_cmd *cmd, t_data *data)
 		i++;
 	}
 	if (path_mod[i] == NULL)
-		return (free_split(path_mod), err_msg("Command not found"),false);
+		return (free_split(path_mod), error_syntax(cmd->name + 1, NO_CMD));
 	free_split(path_mod);
-	ft_memmove(str, str + data->spc_cmd_len, ft_strlen(str));
+	del_substr(str, 0, data->spc_cmd_len);
 	return (true);
 }
