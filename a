@@ -1,0 +1,9 @@
+Makefile
+a
+include
+libft
+libft.a
+obj
+src
+src_old
+testing

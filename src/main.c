@@ -6,7 +6,7 @@
 /*   By: mwilsch <mwilsch@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 11:52:23 by verdant           #+#    #+#             */
-/*   Updated: 2023/03/06 19:26:54 by mwilsch          ###   ########.fr       */
+/*   Updated: 2023/03/07 13:20:21 by mwilsch          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,5 +71,5 @@ int main(int argc, char *argv[])
 		// printf("%s\n", cmds[i].name);
 		i++;
 	}
-	printf("%s", arr[0]);
+	// printf("%s", arr[0]);
 }

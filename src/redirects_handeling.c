@@ -6,7 +6,7 @@
 /*   By: mwilsch <mwilsch@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/04 12:07:08 by mwilsch           #+#    #+#             */
-/*   Updated: 2023/03/06 19:22:25 by mwilsch          ###   ########.fr       */
+/*   Updated: 2023/03/07 14:13:43 by mwilsch          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,15 +15,13 @@
 // Assuming if both sides of the redirect are found like <     >
 // then we error
 
-int	scan_string(char *str, int found)
+int	scan_string(char *str, int found, t_data *data)
 {
 	int found2;
 	if (!str)
 		return (-1);
 	found = ft_search_c(str, '>', '\'');
 	found2 = ft_search_c(str, '<', '\'');
-	if (found != -1 && found2 != -1)
-		return (-1);
 	if (found != -1)
 		return (found);
 	if (found2 != -1)
@@ -75,16 +73,18 @@ bool	check_syntax(char *str, char c, int cnt)
 {
 	int	i;
 
+	printf("|%s|\n", str);
 	i = cnt - 1;
 	if (cnt > 2) // minishell: syntax error near unexpected token `%c'\n
-		return (err_msg("unexpexted token\n"), false);
+		return (error_syntax(NULL, TOO_MANY));
+	// printf("%d", cnt);
 	while (str[i])
 	{
 		i++;
 		if (str[i] && ft_isalnum(str[i]))
 			break;
 		if (incl_char(str[i], "><"))
-			return (err_msg("unexpexted token 2\n"), false);
+			return (error_syntax(NULL, NO_ALNUM_1));
 	}
 	i = 0;
 	while (str[i])
@@ -93,7 +93,7 @@ bool	check_syntax(char *str, char c, int cnt)
 			break ;
 		i++;
 		if (str[i] == '\0')
-			return (err_msg("newline\n"), false); // minishell: syntax error near unexpected token `newline'
+			return (error_syntax(NULL, NEWLINE)); // minishell: syntax error near unexpected token `newline'
 	}
 	return (true);
 }
@@ -130,10 +130,7 @@ bool	check_sematics(char *str, char symbol, int cnt, t_data *data)
 		return (data->fd = open(arg, O_CREAT | O_WRONLY | O_APPEND, 0644), true);
 	// Symbol either '<'
 	if (symbol == '<' && cnt == 1 && access(arg, F_OK) == -1)
-	{
-		err_msg("No such file or directory");
-		return (false); // bash: test: No such file or directory
-	}
+		return (error_syntax(arg, NO_FILE)); // bash: test: No such file or directory
 	// Idk if there is anything I need to do for '<<' yet
 	return (true);
 }
@@ -151,14 +148,38 @@ bool	redirect_pars(char **str, t_data *data)
 	int	found;
 
 	// Checks also if str exsits
-	found = scan_string(*str, found);
-	if (*str[0] == '\0' || found == -1)
-		return (err_msg("empty str or no redirect or unexpexted token 3\n") , false); // change this err
+	if (!*str[0])
+		return (true);
+	found = scan_string(*str, found, data);
+	if (found == -1)
+	{
+		printf("test\n");
+		return (false);
+	}
 	cutout = cut_out(*str, found, data);
 	if (!cutout || !check_syntax(cutout, cutout[0], data->redir_cnt))
 		return (false);
 	if (!check_sematics(cutout, cutout[0], data->redir_cnt, data))
 		return (false);
 	return (true);
-	
+	return (true);
 }
+// bool	redirect_pars(char **str, t_data *data)
+// {
+// 	char *cutout;
+// 	int	found;
+
+// 	// Checks also if str exsits
+// 	if (!*str[0])
+// 		return (true);
+// 	found = scan_string(*str, found);
+// 	if (found == -1)
+// 		return (err_msg("empty str or no redirect or unexpexted token 3\n") , false); // change this err
+// 	cutout = cut_out(*str, found, data);
+// 	if (!cutout || !check_syntax(cutout, cutout[0], data->redir_cnt))
+// 		return (false);
+// 	if (!check_sematics(cutout, cutout[0], data->redir_cnt, data))
+// 		return (false);
+// 	return (true);
+	
+// }
