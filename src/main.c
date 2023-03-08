@@ -6,7 +6,7 @@
 /*   By: mwilsch <mwilsch@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 11:52:23 by verdant           #+#    #+#             */
-/*   Updated: 2023/03/08 13:14:58 by mwilsch          ###   ########.fr       */
+/*   Updated: 2023/03/08 15:18:46 by mwilsch          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,8 @@ t_cmd *structs_init(char *input, t_cmd *cmds, t_data *data)
  * @brief  Main
  * 
  * @note I think the things which are left do are
- * 0 Decide to implement or not implement my refactor ideas
- * 1. Executing the redirection
+ * 0  (Decide to implement or not implement my refactor ideas)
+ * 1. Executing the redirection && where to create the fds
  * 2. Adding a rule for the built-in functions
  * 3. Display a prompt when waiting for a new command.
  * 4. Have a working history.
@@ -56,7 +56,7 @@ int main(int argc, char *argv[])
 	cmds = structs_init(input, cmds, &data);
 	if (!cmds || !are_quotes_even(input)) 
 		return (1);
-	arr = ft_split(input, '|');
+	arr = ft_split(input, '|'); // Check for more than 1 pipes
 	// Check if splitting was succesfull // Do this later
 	while (i < data.cmd_cnt)
 	{

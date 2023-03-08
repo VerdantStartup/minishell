@@ -6,7 +6,7 @@
 /*   By: mwilsch <mwilsch@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 20:22:26 by mwilsch           #+#    #+#             */
-/*   Updated: 2023/03/08 11:27:15 by mwilsch          ###   ########.fr       */
+/*   Updated: 2023/03/08 13:57:15 by mwilsch          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ typedef enum tokens {
 	NEWLINE,
 	NO_FILE,
 	AMBIGOUS_REDIRECT,
+	DENIED,
 } t_err_token;
 
 

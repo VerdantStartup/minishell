@@ -6,7 +6,7 @@
 /*   By: mwilsch <mwilsch@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/04 12:07:08 by mwilsch           #+#    #+#             */
-/*   Updated: 2023/03/08 13:13:03 by mwilsch          ###   ########.fr       */
+/*   Updated: 2023/03/08 15:21:03 by mwilsch          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ int	scan_string(char *str)
 		return (found2);
 	return (-1);
 }
+
 /**
  * @brief This is getting messy I need to refactor this code
  * 
@@ -124,11 +125,9 @@ bool	check_syntax(char *str, char c, int cnt, t_data *data)
  * @brief Semantic meaning of check_sematics
  * 
  * @param symbol is the redirection character itself
- * @note the case I'm considering in this version of the code is that
- * I'm only checking one redirect pair (red and red_arg) so at this
- * point it is still not 100% sure if all erros are considered. That
- * being said creating a file before I know if the code error's
- * is the mistake I want to forgo
+ * @note this part needs to be refactored and then put into the executor
+ * data->fd = open(str, O_CREAT | O_WRONLY | O_TRUNC, 0644) for >
+ * data->fd = open(str, O_CREAT | O_WRONLY | O_APPEND, 0644) for >>
 */
 bool	check_sematics(char *str, char symbol, int cnt, t_data *data)
 {
@@ -143,20 +142,22 @@ bool	check_sematics(char *str, char symbol, int cnt, t_data *data)
 	// Guard Clauses Technique
 		// Is this the right place for the fd?
 	if (symbol == '>' && cnt == 1)
-		return (data->fd = open(str, O_CREAT | O_WRONLY | O_TRUNC, 0644) , true);
+		return (true);
 	if (symbol == '>' && cnt == 2)
-		return (data->fd = open(str, O_CREAT | O_WRONLY | O_APPEND, 0644), true);
+		return (true);
 	// Symbol either '<'
 	if (symbol == '<' && cnt == 1 && access(str, F_OK) == -1)
 		return (error_syntax(str, NO_FILE)); // bash: test: No such file or directory
 	return (true);
 }
 
+
 /**
  * @brief redirect main wrapper
  * 
- * @note I have too do 2 more things here
- * 2. What happens after I'm done with all of this
+ * @note Things left to do
+ * - redirect inside of string literal
+ * - What happens after I'm done with all of this
 */
 bool	redirect_pars(char *str, t_data *data)
 {
@@ -171,17 +172,16 @@ bool	redirect_pars(char *str, t_data *data)
 	while (true)
 	{
 		cutout = cut_out(dup, found, data);
+		printf("|%s|\n", cutout);
 		if (!cutout || !check_syntax(cutout, cutout[0], data->redir_cnt, data))
 			return (false);
 		dup = del_substr(dup, ft_strclen(dup, cutout[0]), ft_strlen(cutout));
-		ft_printf("cutout:\t|%s|\n", cutout); // I can make a while loop now
-		if (!check_sematics(cutout, cutout[0], data->redir_cnt, data))
-			return (false);
+		// if (!check_sematics(cutout, cutout[0], data->redir_cnt, data))
+		// 	return (false); // This will go to the executor
 		free(cutout);
 		found = scan_string(dup);
 		if (found == -1)
 			return (free(dup), true);
 	}
 }
-		// ft_printf("Dup:\t|%s|\n\n", dup); // I can make a while loop now
-		// ft_printf("Dup:\t|%s|\n\n", dup); // I can make a while loop now
+

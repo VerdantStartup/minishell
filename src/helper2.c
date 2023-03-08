@@ -6,7 +6,7 @@
 /*   By: mwilsch <mwilsch@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 17:46:00 by mwilsch           #+#    #+#             */
-/*   Updated: 2023/03/08 12:39:17 by mwilsch          ###   ########.fr       */
+/*   Updated: 2023/03/08 13:26:37 by mwilsch          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,5 +66,7 @@ bool error_syntax(char *str, t_err_token err_tok)
 		ft_printf("minishell: %s: No such file or directory", str);
 	if (err_tok == AMBIGOUS_REDIRECT)
 		ft_printf("minishell: ambiguous redirect\n");
+	if (err_tok == DENIED || str != NULL)
+		ft_printf("minishell: %s permission denied\n", str);
 	return (false);
 }
