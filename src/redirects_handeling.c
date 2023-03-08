@@ -6,7 +6,7 @@
 /*   By: mwilsch <mwilsch@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/04 12:07:08 by mwilsch           #+#    #+#             */
-/*   Updated: 2023/03/07 14:13:43 by mwilsch          ###   ########.fr       */
+/*   Updated: 2023/03/08 13:13:03 by mwilsch          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,29 @@
 // Assuming if both sides of the redirect are found like <     >
 // then we error
 
-int	scan_string(char *str, int found, t_data *data)
+// int	scan_string(char *str, int found)
+// {
+// 	// int	found
+// 	// int	found2;
+	
+// 	if (!str || !str[0])
+// 		return (-1);
+// 	found = ft_search_c(str, '>', '\'');
+// 	// found2 = ft_search_c(str, '<', '\'');
+// 	if (found != -1)
+// 		return (found);
+// 	found = ft_search_c(str, '>', '\'');
+// 	if (found != -1)
+// 		return (found);
+// 	return (-1);
+// }
+
+int	scan_string(char *str)
 {
-	int found2;
-	if (!str)
+	int	found;
+	int	found2;
+	
+	if (!str || !str[0])
 		return (-1);
 	found = ft_search_c(str, '>', '\'');
 	found2 = ft_search_c(str, '<', '\'');
@@ -43,6 +62,7 @@ char *cut_out(char *str, int start, t_data *data)
 	char *res;
 	int	len;
 
+	data->redir_cnt = 0;
 	len = start;
 	if (!str)
 		return (NULL);
@@ -57,7 +77,6 @@ char *cut_out(char *str, int start, t_data *data)
 	while (res[data->redir_cnt] && res[data->redir_cnt] == res[0])
 		data->redir_cnt++;
 	return (res);
-// printf("|%d| |%d|", str[len + start], len);
 }
 
 /**
@@ -69,15 +88,18 @@ char *cut_out(char *str, int start, t_data *data)
  * I was thinking that I could build a wrapper around ft_printf and send the 
  * correct msg then 
 */
-bool	check_syntax(char *str, char c, int cnt)
+bool	check_syntax(char *str, char c, int cnt, t_data *data)
 {
 	int	i;
 
-	printf("|%s|\n", str);
+	// printf("|%s|\n", str);
 	i = cnt - 1;
 	if (cnt > 2) // minishell: syntax error near unexpected token `%c'\n
 		return (error_syntax(NULL, TOO_MANY));
-	// printf("%d", cnt);
+	if (ft_search_c(str, '$', '\'') != -1 && !get_env(str, data))
+	{
+		return (error_syntax(NULL, AMBIGOUS_REDIRECT));
+	}
 	while (str[i])
 	{
 		i++;
@@ -110,28 +132,23 @@ bool	check_syntax(char *str, char c, int cnt)
 */
 bool	check_sematics(char *str, char symbol, int cnt, t_data *data)
 {
-	char	*arg;
-	int		spc_len;
+	int	spc_len;
 	
 	spc_len = 0;
 	// Earsing Spaces between redirect and red_arg
 	while (str[spc_len + cnt] && incl_char(str[spc_len + cnt], " "))
 		spc_len++;
 	// Change if I refactor del_substr to a bool func
-	str = del_substr(str, cnt, spc_len);
-	// printf("|%s|\n", str);
-	if (!str)
-		return (false);
-	arg = del_substr(ft_strdup(str), 0, cnt);
+	str = del_substr(str, 0, cnt + spc_len);
 	// Guard Clauses Technique
+		// Is this the right place for the fd?
 	if (symbol == '>' && cnt == 1)
-		return (data->fd = open(arg, O_CREAT | O_WRONLY | O_TRUNC, 0644) , true);
+		return (data->fd = open(str, O_CREAT | O_WRONLY | O_TRUNC, 0644) , true);
 	if (symbol == '>' && cnt == 2)
-		return (data->fd = open(arg, O_CREAT | O_WRONLY | O_APPEND, 0644), true);
+		return (data->fd = open(str, O_CREAT | O_WRONLY | O_APPEND, 0644), true);
 	// Symbol either '<'
-	if (symbol == '<' && cnt == 1 && access(arg, F_OK) == -1)
-		return (error_syntax(arg, NO_FILE)); // bash: test: No such file or directory
-	// Idk if there is anything I need to do for '<<' yet
+	if (symbol == '<' && cnt == 1 && access(str, F_OK) == -1)
+		return (error_syntax(str, NO_FILE)); // bash: test: No such file or directory
 	return (true);
 }
 
@@ -139,47 +156,32 @@ bool	check_sematics(char *str, char symbol, int cnt, t_data *data)
  * @brief redirect main wrapper
  * 
  * @note I have too do 2 more things here
- * 1. Make it work for multiple redirects
  * 2. What happens after I'm done with all of this
 */
-bool	redirect_pars(char **str, t_data *data)
+bool	redirect_pars(char *str, t_data *data)
 {
 	char *cutout;
+	char *dup;
 	int	found;
-
-	// Checks also if str exsits
-	if (!*str[0])
-		return (true);
-	found = scan_string(*str, found, data);
-	if (found == -1)
-	{
-		printf("test\n");
-		return (false);
-	}
-	cutout = cut_out(*str, found, data);
-	if (!cutout || !check_syntax(cutout, cutout[0], data->redir_cnt))
-		return (false);
-	if (!check_sematics(cutout, cutout[0], data->redir_cnt, data))
-		return (false);
-	return (true);
-	return (true);
-}
-// bool	redirect_pars(char **str, t_data *data)
-// {
-// 	char *cutout;
-// 	int	found;
-
-// 	// Checks also if str exsits
-// 	if (!*str[0])
-// 		return (true);
-// 	found = scan_string(*str, found);
-// 	if (found == -1)
-// 		return (err_msg("empty str or no redirect or unexpexted token 3\n") , false); // change this err
-// 	cutout = cut_out(*str, found, data);
-// 	if (!cutout || !check_syntax(cutout, cutout[0], data->redir_cnt))
-// 		return (false);
-// 	if (!check_sematics(cutout, cutout[0], data->redir_cnt, data))
-// 		return (false);
-// 	return (true);
 	
-// }
+	found = scan_string(str);
+	if (!str[0] || found == -1)
+		return (true);
+	dup = ft_strdup(str);
+	while (true)
+	{
+		cutout = cut_out(dup, found, data);
+		if (!cutout || !check_syntax(cutout, cutout[0], data->redir_cnt, data))
+			return (false);
+		dup = del_substr(dup, ft_strclen(dup, cutout[0]), ft_strlen(cutout));
+		ft_printf("cutout:\t|%s|\n", cutout); // I can make a while loop now
+		if (!check_sematics(cutout, cutout[0], data->redir_cnt, data))
+			return (false);
+		free(cutout);
+		found = scan_string(dup);
+		if (found == -1)
+			return (free(dup), true);
+	}
+}
+		// ft_printf("Dup:\t|%s|\n\n", dup); // I can make a while loop now
+		// ft_printf("Dup:\t|%s|\n\n", dup); // I can make a while loop now

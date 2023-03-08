@@ -6,7 +6,7 @@
 /*   By: mwilsch <mwilsch@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 20:22:26 by mwilsch           #+#    #+#             */
-/*   Updated: 2023/03/07 14:12:00 by mwilsch          ###   ########.fr       */
+/*   Updated: 2023/03/08 11:27:15 by mwilsch          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include <unistd.h>
 # include <fcntl.h>
 # include "../libft/include/libft.h"
+# include "../libft/include/ft_printf.h"
 
 typedef enum tokens {
 	TOO_MANY,
@@ -96,9 +97,9 @@ bool	env_res(char **str, t_data *data);
 
 char	*cut_out(char *str, int start, t_data *data);
 bool	check_sematics(char *str, char symbol, int cnt, t_data *data);
-bool	check_syntax(char *str, char c, int cnt);
-bool	redirect_pars(char **str, t_data *data);
-int		scan_string(char *str, int found, t_data *data);
+bool	check_syntax(char *str, char c, int cnt, t_data *data);
+bool	redirect_pars(char *str, t_data *data);
+int		scan_string(char *str);
 
 /**
  * @brief All functions for command resolution

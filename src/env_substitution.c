@@ -6,7 +6,7 @@
 /*   By: mwilsch <mwilsch@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/03 20:40:10 by mwilsch           #+#    #+#             */
-/*   Updated: 2023/03/06 19:14:23 by mwilsch          ###   ########.fr       */
+/*   Updated: 2023/03/08 11:13:46 by mwilsch          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ char	*get_env(char *str, t_data *data)
 	int		size;
 	int		i;
 
+	data->env_start = ft_search_c(str, '$', '\'') + 1;
 	i = data->env_start;
 	while (str[i] && !incl_char(str[i], " <>\'\""))
 	{
@@ -84,9 +85,10 @@ bool	env_res(char **str, t_data *data)
 	// Checking if Env Var exits
 	if (*str[0] == '\0' || cnt <= 0)
 		return (true);
+	data->env_size = 0;
+	data->env_len = 0;
 	while (i < cnt)
 	{
-		data->env_start = ft_search_c(*str, '$', '\'') + 1;
 		*str = substitute_var(*str, get_env(*str, data), data->env_len + 1, data);
 		if (!*str)
 			return (false);
