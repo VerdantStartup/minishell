@@ -10,8 +10,7 @@ INCFLAGS	= -I include
 LDFLAGS		= -lreadline
 RM				= rm -rf
 
-SRC_FILES	=	main cmd_resolution env_substitution redirects_handeling\
-						helper helper2\
+SRC_FILES	=	main \
 
 SRC			=	$(addprefix $(SRC_DIR), $(addsuffix .c, $(SRC_FILES)))
 OBJ			=	$(addprefix $(OBJ_DIR), $(addsuffix .o, $(SRC_FILES)))
