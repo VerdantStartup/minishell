@@ -3,15 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   minishell_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mwilsch <mwilsch@student.42.fr>            +#+  +:+       +#+        */
+/*   By: verdant <verdant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/11 15:13:57 by mwilsch           #+#    #+#             */
-/*   Updated: 2023/03/04 12:11:32 by mwilsch          ###   ########.fr       */
+/*   Updated: 2023/03/10 13:03:55 by verdant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "testing.h"
+// #include "testing.h"
 #include <strings.h>
+#include <stdlib.h>
+#include <stdbool.h>
+#include <stdio.h>
 
 bool	is_delimiter(char c, char *delimiters)
 {
@@ -204,69 +207,69 @@ char **ft_split_ultimate(char *line, char *delim_set, char *skip)
 	return (str_arr);
 }
 
-bool	are_quotes_even(char *cmd_line_input)
-{
-	int	i;
-	int	cnt;
-	int	cnt2;
+// bool	are_quotes_even(char *cmd_line_input)
+// {
+// 	int	i;
+// 	int	cnt;
+// 	int	cnt2;
 
-	i = 0;
-	cnt = 0;
-	cnt2 = 0;
-	while (cmd_line_input[i])
-	{
-		if (cmd_line_input[i] == '\'')
-			cnt++;
-		if (cmd_line_input[i] == '\"')
-			cnt2++;
-		i++;
-	}
-	if (cnt == 2 || cnt2 == 2 || cnt == 0 || cnt2 == 0)
-		return (true);
-	return (false);
-}
+// 	i = 0;
+// 	cnt = 0;
+// 	cnt2 = 0;
+// 	while (cmd_line_input[i])
+// 	{
+// 		if (cmd_line_input[i] == '\'')
+// 			cnt++;
+// 		if (cmd_line_input[i] == '\"')
+// 			cnt2++;
+// 		i++;
+// 	}
+// 	if (cnt == 2 || cnt2 == 2 || cnt == 0 || cnt2 == 0)
+// 		return (true);
+// 	return (false);
+// }
 
-char	*ft_strjoin(char const *s1, char const *s2)
-{
-	int		size;
-	char	*target;
-	int		i;
+// char	*ft_strjoin(char const *s1, char const *s2)
+// {
+// 	int		size;
+// 	char	*target;
+// 	int		i;
 
-	if (!s1 && !s2)
-		return (0);
-	// if (!s1)
-	// 	return (ft_strdup(s2));
-	// if (!s2)
-	// 	return (ft_strdup(s1));
-	size = strlen(s1) + strlen(s2) + 1;
-	target = (char *)malloc((size + 1) * sizeof(char));
-	i = 0;
-	if (target == NULL)
-		return (NULL);
-	strlcpy(target, (char *)s1, strlen(s1) + 1);
-	strlcat(target, (char *)s2, size + 1);
-	return (target);
-}
+// 	if (!s1 && !s2)
+// 		return (0);
+// 	// if (!s1)
+// 	// 	return (ft_strdup(s2));
+// 	// if (!s2)
+// 	// 	return (ft_strdup(s1));
+// 	size = strlen(s1) + strlen(s2) + 1;
+// 	target = (char *)malloc((size + 1) * sizeof(char));
+// 	i = 0;
+// 	if (target == NULL)
+// 		return (NULL);
+// 	strlcpy(target, (char *)s1, strlen(s1) + 1);
+// 	strlcat(target, (char *)s2, size + 1);
+// 	return (target);
+// }
 
-char	*add_to_arr(char *string,char *string_to_add, int size)
-{
-	int	i;
-	char	*temp;
+// char	*add_to_arr(char *string,char *string_to_add, int size)
+// {
+// 	int	i;
+// 	char	*temp;
 
-	i = 0;
-	// printf("%d %s\n",size,  string_to_add);
-	temp = malloc(sizeof(char) * (size + 1));
-	if (!temp)
-		return (NULL);
-	temp[size] = '\0';
-	while (i < size)
-	{
-		temp[i] = string_to_add[i];
-		i++;
-	}
-	free(string);
-	return (temp);
-}
+// 	i = 0;
+// 	// printf("%d %s\n",size,  string_to_add);
+// 	temp = malloc(sizeof(char) * (size + 1));
+// 	if (!temp)
+// 		return (NULL);
+// 	temp[size] = '\0';
+// 	while (i < size)
+// 	{
+// 		temp[i] = string_to_add[i];
+// 		i++;
+// 	}
+// 	free(string);
+// 	return (temp);
+// }
 
 
 
@@ -274,126 +277,126 @@ char	*add_to_arr(char *string,char *string_to_add, int size)
 // Single and multiple cmd resolution works but I need to figure out a way 
 // that I only resolute if there is a pipe infront of the string
 
-char	*cmd_resolution(char *arr)
-{
-	// 1. Get the PATH Environment Variable
-	char *path_var = getenv("PATH");
-
-	//	2. Split it every directory using : as delimiter
-	char **path_modfiable = ft_split_ultimate(path_var, ":", NULL);
-	
-	
-	int i_loop = 0;
-	while (path_modfiable[i_loop] != NULL)
-	{
-		// Add the command we are looking for to the subdirectory
-		path_modfiable[i_loop] = ft_strjoin(path_modfiable[i_loop], "/");
-		path_modfiable[i_loop] = ft_strjoin(path_modfiable[i_loop], arr);
-		// Check if executable exsits with access
-		if (access(path_modfiable[i_loop], X_OK) == 0)
-		{
-			arr = add_to_arr(arr, path_modfiable[i_loop], strlen(path_modfiable[i_loop]));
-			break;
-		}
-		i_loop++;
-	}
-	// free_split;
-	return (arr);
-}
-
-// What if I do all the steps for each cmd invidually instead of resolute all cmds at once
-// If I split without the pipe I know where the cmd and it's args stop regardsless if there
-// is a space or not
-
-// So in theory I will resolute the first command and handle everything else as arguments
-// unless the I encounter a | which acts as flag that a  new commands has to be resoluted
-
-	// while (arr[i] != NULL)
-	// {
-	// 	printf("%d\t%s\n",i ,arr[i]);
-	// 	i++;
-	// }
-
-
-
-// void	argument_parsing(char **arr, char *line)
+// char	*cmd_resolution(char *arr)
 // {
-// 	char **input_operators;
-// 	char *skip = "\'\"";
+// 	// 1. Get the PATH Environment Variable
+// 	char *path_var = getenv("PATH");
 
-// 	input_operators = ft_split_ultimate(line, " |", skip);
-// 	for (int i = 0; arr[i] != NULL; i++)
-// 		printf("%d\t%s\n",i ,arr[i]);
-// 	write(1, "\n", 1);
-// 	for (int i = 0; input_operators[i] != NULL; i++)
-// 		printf("%d\t%s\n",i ,input_operators[i]);
-
-
-
-
+// 	//	2. Split it every directory using : as delimiter
+// 	char **path_modfiable = ft_split_ultimate(path_var, ":", NULL);
 	
+	
+// 	int i_loop = 0;
+// 	while (path_modfiable[i_loop] != NULL)
+// 	{
+// 		// Add the command we are looking for to the subdirectory
+// 		path_modfiable[i_loop] = ft_strjoin(path_modfiable[i_loop], "/");
+// 		path_modfiable[i_loop] = ft_strjoin(path_modfiable[i_loop], arr);
+// 		// Check if executable exsits with access
+// 		if (access(path_modfiable[i_loop], X_OK) == 0)
+// 		{
+// 			arr = add_to_arr(arr, path_modfiable[i_loop], strlen(path_modfiable[i_loop]));
+// 			break;
+// 		}
+// 		i_loop++;
+// 	}
+// 	// free_split;
+// 	return (arr);
 // }
 
-// What is there to parse?
-	// 1. Env Vars
-	// 2. If the file exsits or not
-	// flags and options don't need to be evaluated
+// // What if I do all the steps for each cmd invidually instead of resolute all cmds at once
+// // If I split without the pipe I know where the cmd and it's args stop regardsless if there
+// // is a space or not
 
-// Question is
-	//
+// // So in theory I will resolute the first command and handle everything else as arguments
+// // unless the I encounter a | which acts as flag that a  new commands has to be resoluted
+
+// 	// while (arr[i] != NULL)
+// 	// {
+// 	// 	printf("%d\t%s\n",i ,arr[i]);
+// 	// 	i++;
+// 	// }
+
+
+
+// // void	argument_parsing(char **arr, char *line)
+// // {
+// // 	char **input_operators;
+// // 	char *skip = "\'\"";
+
+// // 	input_operators = ft_split_ultimate(line, " |", skip);
+// // 	for (int i = 0; arr[i] != NULL; i++)
+// // 		printf("%d\t%s\n",i ,arr[i]);
+// // 	write(1, "\n", 1);
+// // 	for (int i = 0; input_operators[i] != NULL; i++)
+// // 		printf("%d\t%s\n",i ,input_operators[i]);
 
 
 
 
-
-bool has_pipe(char *str)
-{
-	int i = 0;
 	
-	while(str[i])
-	{
-		if (str[i] == '|')
-			return(true);
-		i++;
-	}
-	return (false);
-}
+// // }
 
-char *trim_for_pipe(char *line)
-{
-	int	i = 0;
-	int	k = 0;
+// // What is there to parse?
+// 	// 1. Env Vars
+// 	// 2. If the file exsits or not
+// 	// flags and options don't need to be evaluated
 
-	while (line[i] && line[i] != '|')
-		i++;
-	i++;
-	while (line[i])
-		line[k++] = line[i++];
-	line[k] = '\0';
-	printf("%s\n", line);
-	return (line);
-}
+// // Question is
+// 	//
 
-int main(int argc, char *argv[])
-{
-	char *cmd_line_input = readline(""); // Reading the cmd line input
-	char *delimt_set = " <>";
-	char *skip = "\'\"";
+
+
+
+
+// bool has_pipe(char *str)
+// {
+// 	int i = 0;
 	
-	if (!are_quotes_even(cmd_line_input)) // Is this okay?
-		return (1);
+// 	while(str[i])
+// 	{
+// 		if (str[i] == '|')
+// 			return(true);
+// 		i++;
+// 	}
+// 	return (false);
+// }
 
-	char **arr = ft_split_ultimate(cmd_line_input, delimt_set, skip);
+// char *trim_for_pipe(char *line)
+// {
+// 	int	i = 0;
+// 	int	k = 0;
+
+// 	while (line[i] && line[i] != '|')
+// 		i++;
+// 	i++;
+// 	while (line[i])
+// 		line[k++] = line[i++];
+// 	line[k] = '\0';
+// 	printf("%s\n", line);
+// 	return (line);
+// }
+
+// int main(int argc, char *argv[])
+// {
+// 	char *cmd_line_input = readline(""); // Reading the cmd line input
+// 	char *delimt_set = " <>";
+// 	char *skip = "\'\"";
 	
-	int i = 0;
-	while (arr[i])
-	{
-		if  (i == 0)
-			arr[i] = cmd_resolution(arr[i]);
-		if (has_pipe(arr[i]))
-			arr[i] = cmd_resolution(trim_for_pipe(arr[i]));
-		i++;
-	}
+// 	if (!are_quotes_even(cmd_line_input)) // Is this okay?
+// 		return (1);
+
+// 	char **arr = ft_split_ultimate(cmd_line_input, delimt_set, skip);
+	
+// 	int i = 0;
+// 	while (arr[i])
+// 	{
+// 		if  (i == 0)
+// 			arr[i] = cmd_resolution(arr[i]);
+// 		if (has_pipe(arr[i]))
+// 			arr[i] = cmd_resolution(trim_for_pipe(arr[i]));
+// 		i++;
+// 	}
 	
 	// for (i = 0; arr[i] != NULL; i++)
 	// 	printf("%d\t%s\n",i ,arr[i]);
@@ -411,8 +414,8 @@ int main(int argc, char *argv[])
 	// 	printf("%d\t%s\n",i ,arr[i]);
 	// 	i++;
 	// }
-	return (0);
-}
+// 	return (0);
+// }
 
 
 // 1. Search input string for |
@@ -442,3 +445,18 @@ int main(int argc, char *argv[])
 	// Check for occurences of operators
 	// Anything which occures set to true
 	// The occurces then decide which if clauses to check
+
+
+
+
+
+
+
+
+int main(void)
+{
+	char *line = "echo testing stuff \"|test\" | ls -";
+	char **arr = ft_split_ultimate(line, "|", "\'\"");
+	printf("%s\n", arr[0]);
+	printf("%s\n", arr[1]);
+}

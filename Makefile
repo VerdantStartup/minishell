@@ -1,6 +1,6 @@
 # Marcos #
 
-NAME 			= testing
+NAME 			= minishell
 LIBFT			= libft
 SRC_DIR		= src/
 OBJ_DIR		= obj/
@@ -10,7 +10,7 @@ INCFLAGS	= -I include
 LDFLAGS		= -lreadline
 RM				= rm -rf
 
-SRC_FILES	=	main \
+SRC_FILES	=	main helper\
 
 SRC			=	$(addprefix $(SRC_DIR), $(addsuffix .c, $(SRC_FILES)))
 OBJ			=	$(addprefix $(OBJ_DIR), $(addsuffix .o, $(SRC_FILES)))
